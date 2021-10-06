@@ -1,6 +1,7 @@
 const express = require('express');
 const morgan = require('morgan');
 const dotenv = require('dotenv');
+const cors = require('cors');
 const bodyParser = require('body-parser');
 const swaggerUI = require('swagger-ui-express');
 const swaggerJsDoc = require('swagger-jsdoc');
@@ -10,6 +11,10 @@ const swaggerOptions = require('./configs/swagger');
 const dbConnect = require('./configs/db');
 
 // Import routes
+const authRoutes = require('./components/auth/authAPI');
+const roleRoutes = require('./components/roles/roleAPI');
+const userRoutes = require('./components/users/userAPI');
+const userRoleRoutes = require('./components/users_roles/userRoleAPI');
 
 // Import error handlers
 const { errorHandler } = require('./helpers/errorHandler');
@@ -19,6 +24,7 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 dotenv.config();
+app.use(cors());
 // connect db
 dbConnect
   .authenticate()
@@ -30,7 +36,10 @@ app.use(morgan('tiny'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocs));
-
+app.use(authRoutes);
+app.use(roleRoutes);
+app.use(userRoutes);
+app.use(userRoleRoutes);
 // ROUTE NOT FOUND
 app.use('*', (req, res, next) => {
   const err = new Error('The route can not be found');

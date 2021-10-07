@@ -1,24 +1,18 @@
 <template>
-  <nav id="navbar_1" class="navbar navbar-expand-lg navbar-light bg-light">
-    <a id="title" class="navbar-brand" href="/home">Home</a>
-    <button
-      class="navbar-toggler"
-      type="button"
-      data-toggle="collapse"
-      data-target="#navbarSupportedContent"
-      aria-controls="navbarSupportedContent"
-      aria-expanded="false"
-      aria-label="Toggle navigation"
-    >
-      <span class="navbar-toggler-icon"></span>
-    </button>
-  </nav>
-  <br /><br />
   <div class="auth-wrapper">
     <div class="auth-inner">
       <form @submit.prevent="handleSubmit" action="">
-        <h3>Sign in<i id="loginFont" class="fas fa-sign-in-alt"></i></h3>
-        <label id="errMess" for=""></label>
+        <h3>
+          Sign in to
+          <div class="header">
+            <div class="icon">
+              <i id="v_char" class="fab fa-vimeo-v"> </i
+              ><i id="m_char" class="fab fa-maxcdn"></i>
+              <i id="o_char" class="fab fa-opera"></i>
+            </div>
+          </div>
+        </h3>
+        <label id="errMess" for="">{{ errorMessage }}</label>
         <div class="form-group">
           <label for=""
             >Username <i id="userFont" class="far fa-user"></i
@@ -34,7 +28,9 @@
         <div class="form-group">
           <label for=""
             >Password <i id="passFont" class="fas fa-unlock-alt"></i>
-            <a id="forgot_pass" href="">Forgot password?</a></label
+            <a id="forgot_pass" href="/password_reset"
+              >Forgot password?</a
+            ></label
           >
           <input
             type="password"
@@ -44,10 +40,8 @@
             placeholder="Password"
           />
         </div>
-        <label id="errPass" for=""></label>
-
         <div>
-          <button class="btn btn-primary btn-block">Login</button>
+          <button id="login" class="btn btn-primary btn-block">Login</button>
         </div>
       </form>
     </div>
@@ -62,17 +56,22 @@ export default {
     return {
       username: '',
       password: '',
+      errorMessage: '',
     };
   },
   methods: {
     async handleSubmit() {
-      const response = await axios.post('/login', {
-        username: this.username,
-        password: this.password,
-      });
-      if (response.status === 200) {
+      try {
+        const response = await axios.post('/login', {
+          username: this.username,
+          password: this.password,
+        });
         localStorage.setItem('token', response.data);
-        return this.$router.push({ path: '/home' });
+        this.$router.push({ path: '/home' });
+      } catch (error) {
+        // console.log(error.response);
+        this.errorMessage = error.response.data;
+        this.$router.push({ path: '/' });
       }
     },
   },
@@ -80,6 +79,13 @@ export default {
 </script>
 
 <style scoped>
+.auth-wrapper {
+  margin-top: 50px;
+  color: white;
+}
+.auth-inner {
+  background-color: rgb(20, 0, 57);
+}
 .auth-wrapper .form-control:focus {
   border-color: #778699;
   box-shadow: none;
@@ -94,7 +100,7 @@ export default {
 #userFont,
 #passFont,
 #loginFont {
-  color: rgb(100, 77, 83);
+  color: rgb(241, 240, 240);
 }
 #navbarSupportedContent {
   margin-left: 85%;
@@ -109,5 +115,36 @@ export default {
   color: rgb(100, 102, 219);
   margin-left: 120px;
   font-size: 14px;
+}
+
+#errMess {
+  color: red;
+}
+
+#login {
+  margin-top: 30px;
+  background-color: rgb(32, 175, 32);
+}
+.header {
+  margin-top: 10px;
+}
+.icon {
+  margin-left: 0;
+}
+#v_char {
+  color: #ff7200;
+}
+#m_char,
+#o_char {
+  color: white;
+}
+
+input {
+  background-color: black;
+  color: white;
+}
+input:focus {
+  background-color: black;
+  color: white;
 }
 </style>

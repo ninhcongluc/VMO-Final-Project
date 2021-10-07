@@ -1,39 +1,56 @@
 <template>
   <div id="app" v-bind:class="currentTheme">
-     <div class="theme-options" >
-            <div v-bind:class="{'active':currentTheme==='theme-white'}"
-             @click="switchTheme('theme-white')"  class="theme theme-white"></div>
-            <div v-bind:class="{'active':currentTheme==='theme-blue'}"
-             @click="switchTheme('theme-blue')" class="theme theme-blue"></div>
-            <div v-bind:class="{'active':currentTheme==='theme-orange'}"
-             @click="switchTheme('theme-orange')" class="theme theme-orange"></div>
-            <div v-bind:class="{'active':currentTheme==='theme-purple'}"
-             @click="switchTheme('theme-purple')" class="theme theme-purple"></div>
-            <div v-bind:class="{'active':currentTheme==='theme-green'}"
-             @click="switchTheme('theme-green')" class="theme theme-green"></div>
-            <div v-bind:class="{'active':currentTheme==='theme-black'}"
-             @click="switchTheme('theme-black')" class="theme theme-black"></div>
-     </div>
-     <router-view />
+    <div class="theme-options">
+      <div
+        v-bind:class="{ active: currentTheme === 'theme-white' }"
+        @click="switchTheme('theme-white')"
+        class="theme theme-white"
+      ></div>
+      <div
+        v-bind:class="{ active: currentTheme === 'theme-blue' }"
+        @click="switchTheme('theme-blue')"
+        class="theme theme-blue"
+      ></div>
+      <div
+        v-bind:class="{ active: currentTheme === 'theme-orange' }"
+        @click="switchTheme('theme-orange')"
+        class="theme theme-orange"
+      ></div>
+      <div
+        v-bind:class="{ active: currentTheme === 'theme-purple' }"
+        @click="switchTheme('theme-purple')"
+        class="theme theme-purple"
+      ></div>
+      <div
+        v-bind:class="{ active: currentTheme === 'theme-green' }"
+        @click="switchTheme('theme-green')"
+        class="theme theme-green"
+      ></div>
+      <div
+        v-bind:class="{ active: currentTheme === 'theme-black' }"
+        @click="switchTheme('theme-black')"
+        class="theme theme-black"
+      ></div>
+    </div>
+    <router-view />
   </div>
 </template>
 
 <script>
 export default {
-  name: "App",
-  components : {
-  },
+  name: 'App',
+  components: {},
   data() {
     return {
-      currentTheme : localStorage.getItem('theme-color')
-    }
+      currentTheme: localStorage.getItem('theme-color'),
+    };
   },
   methods: {
     switchTheme(theme) {
-      localStorage.setItem('theme-color',theme)
-      this.currentTheme = localStorage.getItem('theme-color')
-    }
-  }
+      localStorage.setItem('theme-color', theme);
+      this.currentTheme = localStorage.getItem('theme-color');
+    },
+  },
 };
 </script>
 
@@ -41,7 +58,6 @@ export default {
 @import url('https://fonts.googleapis.com/css?family=Fira+Sans:400,500,600,700,800');
 * {
   box-sizing: border-box;
-
 }
 .theme-options {
   text-align: center;
@@ -85,11 +101,22 @@ body {
   font-weight: 400;
   font-family: 'Fira Sans', sans-serif;
 }
-h1,h2,h3,h4,h5,h6, label, span {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+label,
+span {
   font-weight: 500;
   font-family: 'Fira Sans', sans-serif;
 }
-body, html, #app, #root, auth-wrapper {
+body,
+html,
+#app,
+#root,
+auth-wrapper {
   width: 100%;
   height: 100%;
 }
@@ -99,11 +126,12 @@ body, html, #app, #root, auth-wrapper {
 }
 .auth-inner {
   width: 450px;
+  height: 450px;
   margin: auto;
-  background : #ffffff;
-   box-shadow: 0px 14px 80px rgba(34, 35, 58, 0.2);
-   padding : 40px 55px 45px 55px;
-   border-radius: 15px;
-   transition: all .3s;
+  background: #ffffff;
+  box-shadow: 0px 14px 80px rgba(34, 35, 58, 0.2);
+  padding: 40px 55px 45px 55px;
+  border-radius: 15px;
+  transition: all 0.3s;
 }
 </style>

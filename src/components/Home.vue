@@ -15,7 +15,6 @@ export default {
   },
   async created() {
     if (localStorage.getItem('token') === null) {
-      console.log('Back');
       this.$router.push('/');
     } else {
       const token = localStorage.getItem('token');

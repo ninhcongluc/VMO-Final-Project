@@ -6,7 +6,7 @@ const userRoleService = require('../users_roles/userRoleService');
 const roleService = require('../roles/roleService');
 
 const authMiddleware = async (req, res, next) => {
-  const accessToken = ls.get('token');
+  const accessToken = req.headers['x-access-token'] || ls.get('token');
   if (!accessToken) {
     const error = new Error('NOT FOUND TOKEN');
     error.statusCode = StatusCodes.UNAUTHORIZED;
@@ -23,7 +23,7 @@ const authMiddleware = async (req, res, next) => {
 };
 
 const authAdminMiddleware = async (req, res, next) => {
-  const accessToken = ls.get('token');
+  const accessToken = req.headers['x-access-token'] || ls.get('token');
 
   if (!accessToken) {
     const error = new Error('NOT FOUND TOKEN');
@@ -38,6 +38,7 @@ const authAdminMiddleware = async (req, res, next) => {
     const arrRoleId = userRole.map(ur => ur.dataValues.rid);
     const roleNames = [];
     for (let i = 0; i < arrRoleId.length; i += 1) {
+      // eslint-disable-next-line no-await-in-loop
       const role = await roleService.findById(arrRoleId[i]);
       roleNames.push(role.name);
     }

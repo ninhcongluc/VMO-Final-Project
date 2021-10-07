@@ -12,4 +12,13 @@ const findById = uid =>
     where: { id: uid },
   });
 
-module.exports = { findUserByUsername, createUser, findAllUsers, findById };
+const updateUserById = (id, newPassword) =>
+  User.update({ password: newPassword }, { where: { id } });
+
+module.exports = {
+  findUserByUsername,
+  createUser,
+  findAllUsers,
+  findById,
+  updateUserById,
+};

@@ -4,6 +4,7 @@ import Login from './components/Login.vue';
 import Home from './components/Home.vue';
 import ResetPassword from './components/ResetPassword.vue';
 import ChangePassword from './components/ChangePassword.vue';
+import Admin from './components/admin/Admin.vue';
 const routes = [
   {
     path: '/',
@@ -24,6 +25,11 @@ const routes = [
     path: '/password_reset/:token',
     name: 'ChangePassword',
     component: ChangePassword,
+  },
+  {
+    path: '/admin_manager',
+    name: 'Admin',
+    component: Admin,
   },
 ];
 

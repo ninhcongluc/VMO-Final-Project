@@ -109,7 +109,7 @@ h5,
 h6,
 label,
 span {
-  font-weight: 500;
+  font-weight: 300;
   font-family: 'Fira Sans', sans-serif;
 }
 body,

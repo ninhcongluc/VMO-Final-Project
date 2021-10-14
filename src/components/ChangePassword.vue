@@ -29,6 +29,8 @@
         <label id="success_mess" v-if="!isError">{{ successMessage }}</label>
         <br />
         <button class="change_pass btn btn-">Change Password</button>
+        <br />
+        <a href="/"><i class="fas fa-backward"></i>Login Page</a>
       </form>
     </div>
   </div>
@@ -147,5 +149,9 @@ h5 {
 #success_mess {
   margin-left: 15px;
   color: rgb(56, 228, 79);
+}
+a {
+  margin-left: 15px;
+  color: rgb(185, 176, 202);
 }
 </style>

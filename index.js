@@ -15,6 +15,9 @@ const authRoutes = require('./components/auth/authAPI');
 const roleRoutes = require('./components/roles/roleAPI');
 const userRoutes = require('./components/users/userAPI');
 const userRoleRoutes = require('./components/users_roles/userRoleAPI');
+const techRoutes = require('./components/technologies/techAPI');
+const projectRoutes = require('./components/projects/projectAPI');
+const unitRoutes = require('./components/units/unitAPI');
 
 // Import error handlers
 const { errorHandler } = require('./helpers/errorHandler');
@@ -40,6 +43,9 @@ app.use(authRoutes);
 app.use(roleRoutes);
 app.use(userRoutes);
 app.use(userRoleRoutes);
+app.use(techRoutes);
+app.use(projectRoutes);
+app.use(unitRoutes);
 // ROUTE NOT FOUND
 app.use('*', (req, res, next) => {
   const err = new Error('The route can not be found');

@@ -1,6 +1,8 @@
 const { DataTypes } = require('sequelize');
 
 const db = require('../../configs/db');
+const Role = require('../roles/role');
+const userRole = require('../users_roles/userRole');
 
 const User = db.define(
   'users',
@@ -68,5 +70,8 @@ const User = db.define(
     timestamps: true,
   }
 );
+
+User.belongsToMany(Role, { through: userRole });
+Role.belongsToMany(User, { through: userRole });
 
 module.exports = User;

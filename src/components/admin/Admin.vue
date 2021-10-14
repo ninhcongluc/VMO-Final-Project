@@ -16,7 +16,7 @@
           </li>
 
           <li>
-            <a href=""><i class="fas fa-users"></i><span>Customers</span></a>
+            <a href=""><i class="fab fa-node-js"></i><span>Technology</span></a>
           </li>
           <li>
             <a href=""><i class="fas fa-user-tie"></i><span>Members</span></a>
@@ -59,16 +59,16 @@
       <div class="cards">
         <div class="card-single">
           <div>
-            <h1>54</h1>
-            <span>Customers</span>
+            <h1>{{ countTech }}</h1>
+            <span>Technology</span>
           </div>
           <div>
-            <i class="fas fa-child"></i>
+            <i class="fab fa-node-js"></i>
           </div>
         </div>
         <div class="card-single">
           <div>
-            <h1>79</h1>
+            <h1>{{ countProject }}</h1>
             <span>Projects</span>
           </div>
           <div>
@@ -77,7 +77,7 @@
         </div>
         <div class="card-single">
           <div>
-            <h1>124</h1>
+            <h1>{{ countMember }}</h1>
             <span>Members</span>
           </div>
           <div>
@@ -86,7 +86,7 @@
         </div>
         <div class="card-single">
           <div>
-            <h1>5</h1>
+            <h1>{{ countUnit }}</h1>
             <span>Units</span>
           </div>
           <div>
@@ -161,12 +161,18 @@
 </template>
 
 <script>
-// import axios from 'axios';
+import axios from 'axios';
 import jwt from 'jsonwebtoken';
 export default {
   name: 'Admin',
   data() {
-    return {};
+    return {
+      countTech: 0,
+      countMember: 0,
+      countProject: 0,
+      countUnit: 0,
+      errorMessage: '',
+    };
   },
   async created() {
     if (localStorage.getItem('token') === null) {
@@ -177,7 +183,29 @@ export default {
       console.log(user);
     }
   },
-  async mounted() {},
+  async mounted() {
+    try {
+      const techs = await axios.get('/technologies');
+      techs.data.forEach(() => {
+        this.countTech += 1;
+      });
+      const users = await axios.get('/users');
+      users.data.forEach(() => {
+        this.countMember += 1;
+      });
+      const projects = await axios.get('/projects');
+      projects.data.forEach(() => {
+        this.countProject += 1;
+      });
+      const units = await axios.get('/units');
+      units.data.forEach(() => {
+        this.countUnit += 1;
+      });
+    } catch (error) {
+      this.errorMessage = error.response.data;
+      console.log('error' + this.errorMessage);
+    }
+  },
   methods: {},
 };
 </script>

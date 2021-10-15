@@ -1,7 +1,6 @@
 const userRole = require('./userRole');
 
-const addRoleToUser = (userId, roleId) =>
-  userRole.create({ uid: userId, rid: roleId });
+const addRoleToUser = (userId, roleId) => userRole.create({ userId, roleId });
 
 const findRoleUser = userId =>
   userRole.findAll({

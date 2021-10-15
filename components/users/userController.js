@@ -52,4 +52,14 @@ const getAllUsers = async (req, res) => {
   }
 };
 
-module.exports = { create, getAllUsers };
+const getUserById = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const user = await userService.findById(id);
+    res.status(StatusCodes.OK).send(user);
+  } catch (error) {
+    res.status(StatusCodes.BAD_REQUEST).send(error);
+  }
+};
+
+module.exports = { create, getAllUsers, getUserById };

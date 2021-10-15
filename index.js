@@ -13,8 +13,10 @@ const dbConnect = require('./configs/db');
 // Import routes
 const authRoutes = require('./components/auth/authAPI');
 const roleRoutes = require('./components/roles/roleAPI');
-const userRoutes = require('./components/users/userAPI');
 const userRoleRoutes = require('./components/users_roles/userRoleAPI');
+
+const userRoutes = require('./components/users/userAPI');
+
 const techRoutes = require('./components/technologies/techAPI');
 const projectRoutes = require('./components/projects/projectAPI');
 const unitRoutes = require('./components/units/unitAPI');

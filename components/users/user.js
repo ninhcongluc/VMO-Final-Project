@@ -2,6 +2,7 @@ const { DataTypes } = require('sequelize');
 
 const db = require('../../configs/db');
 const Role = require('../roles/role');
+const Unit = require('../units/unit');
 const userRole = require('../users_roles/userRole');
 
 const User = db.define(
@@ -64,6 +65,10 @@ const User = db.define(
       type: DataTypes.STRING,
       allowNull: true,
     },
+    unitId: {
+      type: DataTypes.UUID,
+      allowNull: true,
+    },
   },
   {
     freezeTableName: true,
@@ -72,6 +77,6 @@ const User = db.define(
 );
 
 User.belongsToMany(Role, { through: userRole });
-Role.belongsToMany(User, { through: userRole });
+User.belongsTo(Unit);
 
 module.exports = User;

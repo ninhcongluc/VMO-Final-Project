@@ -4,12 +4,12 @@ const db = require('../../configs/db');
 const userRole = db.define(
   'users_roles',
   {
-    uid: {
+    userId: {
       type: DataTypes.UUID,
       primaryKey: true,
       allowNull: false,
     },
-    rid: {
+    roleId: {
       type: DataTypes.UUID,
       primaryKey: true,
       allowNull: false,

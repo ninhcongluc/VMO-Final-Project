@@ -35,123 +35,44 @@
       </div>
     </div>
   </div>
-
   <div class="main-content">
-    <header>
-      <div class="header-title">
-        <h2>
-          <label for="nav-toggle"> <i class="fas fa-bars"></i></label>
-        </h2>
-      </div>
-      <div class="user-wapper">
-        <i class="fas fa-user-shield"></i>
-        <div>
-          <small>Admintor</small>
-        </div>
-      </div>
-    </header>
-    <main>
-      <div class="cards">
-        <div class="card-single">
-          <div>
-            <h1>{{ countTech }}</h1>
-            <span>Technology</span>
-          </div>
-          <div>
-            <i class="fab fa-node-js"></i>
-          </div>
-        </div>
-        <div class="card-single">
-          <div>
-            <h1>{{ countProject }}</h1>
-            <span>Projects</span>
-          </div>
-          <div>
-            <i class="fas fa-tasks"></i>
-          </div>
-        </div>
-        <div class="card-single">
-          <div>
-            <h1>{{ countMember }}</h1>
-            <span>Members</span>
-          </div>
-          <div>
-            <i class="fas fa-users"></i>
-          </div>
-        </div>
-        <div class="card-single">
-          <div>
-            <h1>{{ countUnit }}</h1>
-            <span>Units</span>
-          </div>
-          <div>
-            <i class="fas fa-universal-access"></i>
-          </div>
-        </div>
-      </div>
-      <div class="recent-grid">
-        <div class="projects">
-          <div class="card">
-            <div class="card-header">
-              <h3>Recent Projects</h3>
-              <Button
-                >See all <i class="fas fa-arrow-alt-circle-right"></i
-              ></Button>
-            </div>
-            <div class="card-body">
-              <div class="table-reponsive">
-                <table width="100%">
-                  <thead>
-                    <tr>
-                      <td>Project Title</td>
-                      <td>Unit</td>
-                      <td>Status</td>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td>UI/UX Design</td>
-                      <td>Frontend</td>
-                      <td>
-                        <span class="status pink"></span>
-                        inprogress
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>Shoe Shop</td>
-                      <td>Mobile Team</td>
-                      <td>
-                        <span class="status orange"></span>
-                        pending
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="customers">
-          <div class="card">
-            <div class="card-header">
-              <h3>New Customer</h3>
-              <Button
-                >See all <i class="fas fa-arrow-alt-circle-right"></i
-              ></Button>
-            </div>
-            <div class="card-body">
-              <div class="customer">
-                <div>
-                  <h4><i class="fas fa-file-signature"></i> Loki</h4>
-                  <i class="fas fa-envelope-square"></i> loki@gmail.com
-                </div>
-                <div><i class="fas fa-phone"></i> 0914134253</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </main>
+    <h1>Profile Member:</h1>
+    <ul>
+      <li>
+        <h3>UserID: {{ user.id }}</h3>
+      </li>
+      <li>
+        <h3>Email: {{ user.username }}</h3>
+      </li>
+      <li>
+        <h3>Name: {{ user.name }}</h3>
+      </li>
+      <li>
+        <h3>Adress: {{ user.address }}</h3>
+      </li>
+      <li>
+        <h3>Date Of Birth: {{ user.dob }}</h3>
+      </li>
+      <li>
+        <h3>CMT: {{ user.cmt }}</h3>
+      </li>
+    </ul>
+    <br />
+    <h1>#</h1>
+    <ul>
+      <li>
+        <h3>Technical Skill: {{ user.technical }}</h3>
+      </li>
+      <li>
+        <h3>Experience: {{ user.experience }}</h3>
+      </li>
+      <li>
+        <h3>Language Skill: {{ user.language }}</h3>
+      </li>
+      <li>
+        <h3>Certificate: {{ user.certificate }}</h3>
+      </li>
+    </ul>
   </div>
 </template>
 
@@ -159,14 +80,11 @@
 import axios from 'axios';
 import jwt from 'jsonwebtoken';
 export default {
-  name: 'Admin',
+  name: 'MemberInfo',
   data() {
     return {
-      countTech: 0,
-      countMember: 0,
-      countProject: 0,
-      countUnit: 0,
-      errorMessage: '',
+      id: this.$route.params.id,
+      user: {},
     };
   },
   async created() {
@@ -180,25 +98,11 @@ export default {
   },
   async mounted() {
     try {
-      const techs = await axios.get('/technologies');
-      techs.data.forEach(() => {
-        this.countTech += 1;
-      });
-      const users = await axios.get('/users');
-      users.data.forEach(() => {
-        this.countMember += 1;
-      });
-      const projects = await axios.get('/projects');
-      projects.data.forEach(() => {
-        this.countProject += 1;
-      });
-      const units = await axios.get('/units');
-      units.data.forEach(() => {
-        this.countUnit += 1;
-      });
+      const user = await axios.get(`/users/${this.id}`);
+      this.user = user.data;
+      console.log(this.user);
     } catch (error) {
-      this.errorMessage = error.response.data;
-      console.log('error' + this.errorMessage);
+      console.log(error.message);
     }
   },
   methods: {},
@@ -214,6 +118,7 @@ export default {
   text-decoration: none;
   font-size: 18px;
 }
+
 .sidebar {
   width: 345px;
   position: fixed;
@@ -269,7 +174,10 @@ export default {
 }
 .main-content {
   transition: margin-left 300ms;
-  margin-left: 345px;
+  margin-left: 400px;
+}
+.main-content h1 {
+  background: #fff;
 }
 header {
   display: flex;
@@ -331,12 +239,6 @@ header label i {
   padding: 0rem 1rem;
   font-size: 1.5rem;
 }
-.search-wrapper input {
-  height: 100%;
-  padding: 0.5rem;
-  outline: none;
-  border: none;
-}
 
 .user-wapper {
   display: flex;
@@ -357,109 +259,6 @@ main {
   padding: 2rem 1.5rem;
   background: #f1f5f9;
   min-height: calc(100vh - 90px);
-}
-
-.cards {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  grid-gap: 2rem;
-  margin-top: 1rem;
-}
-
-.card-single {
-  display: flex;
-  justify-content: space-between;
-  background: #fff;
-  padding: 2rem;
-  border-radius: 2px;
-}
-
-.card-single i {
-  font-size: 3rem;
-  color: rgb(172, 53, 53);
-}
-.card-single span {
-  color: grey;
-}
-
-.recent-grid {
-  margin-top: 3.5rem;
-  display: grid;
-  grid-gap: 2rem;
-  grid-template-columns: 67% auto;
-}
-
-.card {
-  background: #fff;
-}
-.card-header,
-.card-body {
-  padding: 1rem;
-}
-.card-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-.card-header button {
-  background: rgb(155, 72, 72);
-  border-radius: 10px;
-  color: #fff;
-  font-size: 0.8rem;
-  padding: 0.5rem 1rem;
-  border: 1px solid rgb(155, 72, 72);
-}
-table {
-  border-collapse: collapse;
-}
-
-thead tr {
-  border-top: 1px solid #f0f0f0;
-  border-bottom: 1px solid #f0f0f0;
-}
-
-thead td {
-  font-weight: 700;
-}
-td {
-  padding: 0.5rem 1rem;
-  font-size: 0.9rem;
-  color: #222;
-}
-td .status {
-  display: inline-block;
-  height: 20px;
-  width: 20px;
-  border-radius: 50%;
-  margin-right: 1rem;
-}
-.status.pink {
-  background-color: pink;
-}
-
-tr td:last-child {
-  display: flex;
-  align-items: center;
-}
-.status.orange {
-  background-color: orange;
-}
-
-.table-reponsive {
-  width: 100%;
-  overflow-x: auto;
-}
-
-.customer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0.5re 1rem;
-}
-.customer h4 {
-  font-size: 0.8rem;
-  font-weight: 700;
-  color: #222;
 }
 
 @media only screen and (max-width: 1200px) {
@@ -570,8 +369,5 @@ tr td:last-child {
 }
 
 @media only screen and (max-width: 560px) {
-  .cards {
-    grid-template-columns: 100%;
-  }
 }
 </style>

@@ -2,9 +2,6 @@ const ls = require('local-storage');
 const jwt = require('jsonwebtoken');
 const { StatusCodes } = require('http-status-codes');
 
-const userRoleService = require('../users_roles/userRoleService');
-const roleService = require('../roles/roleService');
-
 const authMiddleware = async (req, res, next) => {
   const accessToken = req.headers['x-access-token'] || ls.get('token');
   if (!accessToken) {
@@ -33,17 +30,8 @@ const authAdminMiddleware = async (req, res, next) => {
   try {
     const user = jwt.verify(accessToken, process.env.SECRET_KEY);
     req.user = user;
-
-    const userRole = await userRoleService.findRoleUser(req.user.id);
-    const arrRoleId = userRole.map(ur => ur.dataValues.rid);
-    const roleNames = [];
-    for (let i = 0; i < arrRoleId.length; i += 1) {
-      // eslint-disable-next-line no-await-in-loop
-      const role = await roleService.findById(arrRoleId[i]);
-      roleNames.push(role.name);
-    }
-    const isAdmin = roleNames.some(name => name === 'admin');
-
+    console.log(user);
+    const isAdmin = user.roles.some(role => role.name === 'admin');
     if (!isAdmin) {
       const error = new Error(
         'Your account does not have access to this resource'

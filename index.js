@@ -14,12 +14,11 @@ const dbConnect = require('./configs/db');
 const authRoutes = require('./components/auth/authAPI');
 const roleRoutes = require('./components/roles/roleAPI');
 const userRoleRoutes = require('./components/users_roles/userRoleAPI');
-
 const userRoutes = require('./components/users/userAPI');
-
 const techRoutes = require('./components/technologies/techAPI');
 const projectRoutes = require('./components/projects/projectAPI');
 const unitRoutes = require('./components/units/unitAPI');
+const projectStatusRoutes = require('./components/project_status/statusAPI');
 
 // Import error handlers
 const { errorHandler } = require('./helpers/errorHandler');
@@ -47,6 +46,7 @@ app.use(userRoutes);
 app.use(userRoleRoutes);
 app.use(techRoutes);
 app.use(projectRoutes);
+app.use(projectStatusRoutes);
 app.use(unitRoutes);
 // ROUTE NOT FOUND
 app.use('*', (req, res, next) => {

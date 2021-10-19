@@ -2,8 +2,8 @@ const { DataTypes } = require('sequelize');
 
 const db = require('../../configs/db');
 
-const Unit = db.define(
-  'units',
+const Status = db.define(
+  'status',
   {
     id: {
       type: DataTypes.UUID,
@@ -16,13 +16,10 @@ const Unit = db.define(
       unique: true,
       allowNull: false,
     },
-    description: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    managerId: {
-      type: DataTypes.UUID,
+    status: {
+      type: DataTypes.BOOLEAN,
       allowNull: true,
+      defaultValue: true,
     },
   },
   {
@@ -31,4 +28,4 @@ const Unit = db.define(
   }
 );
 
-module.exports = Unit;
+module.exports = Status;

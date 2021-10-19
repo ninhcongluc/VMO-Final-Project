@@ -77,6 +77,6 @@ const User = db.define(
 );
 
 User.belongsToMany(Role, { through: userRole });
-User.belongsTo(Unit);
+User.belongsTo(Unit, { foreignKey: 'unitId' });
 
 module.exports = User;

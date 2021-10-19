@@ -5,4 +5,7 @@ const findById = rid =>
     where: { id: rid },
   });
 
-module.exports = { findById };
+const createRole = name => Role.create({ name });
+
+const findAll = () => Role.findAll();
+module.exports = { findById, createRole, findAll };

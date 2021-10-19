@@ -32,6 +32,7 @@ const login = async (req, res, next) => {
       id: user.id,
       name: user.name,
       username: user.username,
+      roles: user.roles,
     },
     process.env.SECRET_KEY,
     {
@@ -55,6 +56,7 @@ const verifyEmail = async (req, res, next) => {
       id: user.id,
       name: user.name,
       username: user.username,
+      roles: user.roles,
     },
     process.env.SECRET_KEY,
     {
@@ -90,13 +92,13 @@ const changePassword = async (req, res, next) => {
     error.status = StatusCodes.BAD_REQUEST;
     return next(error);
   }
-  console.log(newPassword, confirmPassword);
+
   // check valid password
   const isValidPass = await authValid.changePasswordSchema.validate({
     newPassword,
     confirmPassword,
   });
-  console.log(isValidPass);
+
   if (isValidPass.error) {
     return res.status(StatusCodes.BAD_REQUEST).send(isValidPass.error.message);
   }

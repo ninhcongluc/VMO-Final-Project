@@ -1,23 +1,23 @@
 const { StatusCodes } = require('http-status-codes');
 
-const techValid = require('./techValidation');
-const techService = require('./techService');
+const statusValid = require('./statusValidation');
+const statusService = require('./statusService');
 
 const create = async (req, res, next) => {
   const { name, status } = req.body;
-  const isValid = await techValid.validate({ name, status });
+  const isValid = await statusValid.validate({ name, status });
   if (isValid.error) {
     return res.status(StatusCodes.BAD_REQUEST).send(isValid.error.message);
   }
-  const isDuplicate = await techService.findTechByName(name);
+  const isDuplicate = await statusService.findStatusByName(name);
   if (isDuplicate) {
     const error = new Error(`${name} is existed`);
     error.statusCode = StatusCodes.BAD_REQUEST;
     return next(error);
   }
   try {
-    const tech = await techService.createTech(name, status);
-    return res.status(StatusCodes.OK).send(tech);
+    const projectStatus = await statusService.createStatus(name, status);
+    return res.status(StatusCodes.OK).send(projectStatus);
   } catch (error) {
     return res.status(StatusCodes.BAD_REQUEST).send(error.message);
   }
@@ -25,43 +25,43 @@ const create = async (req, res, next) => {
 
 const getAll = async (req, res) => {
   try {
-    const techs = await techService.findAll();
-    res.status(StatusCodes.OK).send(techs);
+    const projectStatus = await statusService.findAll();
+    res.status(StatusCodes.OK).send(projectStatus);
   } catch (error) {
     res.status(StatusCodes.BAD_REQUEST).send(error.message);
   }
 };
 
-const getTechById = async (req, res) => {
+const getStatusById = async (req, res) => {
   const { id } = req.params;
   try {
-    const tech = await techService.findTechById(id);
-    res.status(StatusCodes.OK).send(tech);
+    const projectStatus = await statusService.findStatusById(id);
+    res.status(StatusCodes.OK).send(projectStatus);
   } catch (error) {
     res.status(StatusCodes.BAD_REQUEST).send(error);
   }
 };
 
-const updateTech = async (req, res) => {
+const updateStatus = async (req, res) => {
   const { id } = req.params;
   const { name, status } = req.body;
-  const isValid = await techValid.validate({ name, status });
+  const isValid = await statusValid.validate({ name, status });
   if (isValid.error) {
     return res.status(StatusCodes.BAD_REQUEST).send(isValid.error.message);
   }
 
   try {
-    await techService.updateById(id, name, status);
+    await statusService.updateById(id, name, status);
     return res.status(StatusCodes.OK).send('Updated Successfully');
   } catch (error) {
     return res.status(StatusCodes.BAD_REQUEST).send(error);
   }
 };
 
-const deleteTech = async (req, res) => {
+const deleteStatus = async (req, res) => {
   const { id } = req.params;
   try {
-    await techService.deleteTechById(id);
+    await statusService.deleteStatusById(id);
     res.status(StatusCodes.OK).send('Deleted Successfully');
   } catch (error) {
     res.status(StatusCodes.BAD_REQUEST).send(error);
@@ -71,7 +71,7 @@ const deleteTech = async (req, res) => {
 module.exports = {
   create,
   getAll,
-  getTechById,
-  updateTech,
-  deleteTech,
+  getStatusById,
+  updateStatus,
+  deleteStatus,
 };

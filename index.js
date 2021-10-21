@@ -15,10 +15,15 @@ const authRoutes = require('./components/auth/authAPI');
 const roleRoutes = require('./components/roles/roleAPI');
 const userRoleRoutes = require('./components/users_roles/userRoleAPI');
 const userRoutes = require('./components/users/userAPI');
-const techRoutes = require('./components/technologies/techAPI');
+const techRoutes = require('./components/techs/techAPI');
 const projectRoutes = require('./components/projects/projectAPI');
 const unitRoutes = require('./components/units/unitAPI');
 const projectStatusRoutes = require('./components/project_status/statusAPI');
+const projectTypeRoutes = require('./components/project_type/typeAPI');
+const projectTechRoutes = require('./components/projects_techs/projectTechAPI');
+const taskRoutes = require('./components/tasks/taskAPI');
+const userTaskRoutes = require('./components/users_tasks/userTaskAPI');
+const userTechRoutes = require('./components/users_techs/userTechAPI');
 
 // Import error handlers
 const { errorHandler } = require('./helpers/errorHandler');
@@ -45,9 +50,14 @@ app.use(roleRoutes);
 app.use(userRoutes);
 app.use(userRoleRoutes);
 app.use(techRoutes);
+app.use(projectTypeRoutes);
 app.use(projectRoutes);
 app.use(projectStatusRoutes);
+app.use(projectTechRoutes);
 app.use(unitRoutes);
+app.use(taskRoutes);
+app.use(userTaskRoutes);
+app.use(userTechRoutes);
 // ROUTE NOT FOUND
 app.use('*', (req, res, next) => {
   const err = new Error('The route can not be found');

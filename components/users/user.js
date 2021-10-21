@@ -4,6 +4,8 @@ const db = require('../../configs/db');
 const Role = require('../roles/role');
 const Unit = require('../units/unit');
 const userRole = require('../users_roles/userRole');
+const userTask = require('../users_tasks/userTask');
+const Task = require('../tasks/task');
 
 const User = db.define(
   'users',
@@ -47,10 +49,6 @@ const User = db.define(
       type: DataTypes.STRING,
       allowNull: true,
     },
-    technical: {
-      type: DataTypes.STRING,
-      allowNull: true,
-    },
     experience: {
       type: DataTypes.INTEGER,
       allowNull: true,
@@ -77,6 +75,7 @@ const User = db.define(
 );
 
 User.belongsToMany(Role, { through: userRole });
+User.belongsToMany(Task, { through: userTask });
 User.belongsTo(Unit, { foreignKey: 'unitId' });
 
 module.exports = User;

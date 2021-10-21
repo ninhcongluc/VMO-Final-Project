@@ -1,25 +1,23 @@
 const { DataTypes } = require('sequelize');
 const db = require('../../configs/db');
 
-const Role = db.define(
-  'roles',
+const userTech = db.define(
+  'users_techs',
   {
-    id: {
+    userId: {
       type: DataTypes.UUID,
-      defaultValue: DataTypes.UUIDV4,
       primaryKey: true,
       allowNull: false,
     },
-    name: {
-      type: DataTypes.STRING,
+    techId: {
+      type: DataTypes.UUID,
+      primaryKey: true,
       allowNull: false,
-      unique: true,
     },
   },
   {
-    freezeTableName: true,
     timestamps: true,
   }
 );
 
-module.exports = Role;
+module.exports = userTech;

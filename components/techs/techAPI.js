@@ -27,7 +27,7 @@ const auth = require('../auth/authMiddleware');
  *       400:
  *         description: Bad Request
  */
-router.post('/technologies', auth.authMiddleware, techController.create);
+router.post('/technologies', auth.authAdminMiddleware, techController.create);
 /**
  * @swagger
  * /technologies:
@@ -47,7 +47,7 @@ router.post('/technologies', auth.authMiddleware, techController.create);
  *           description: Bad request
  *
  */
-router.get('/technologies', auth.authMiddleware, techController.getAll);
+router.get('/technologies', auth.authAdminMiddleware, techController.getAll);
 /**
  * @swagger
  * /technologies/{technologyId}:
@@ -70,7 +70,7 @@ router.get('/technologies', auth.authMiddleware, techController.getAll);
  */
 router.get(
   '/technologies/:id',
-  auth.authMiddleware,
+  auth.authAdminMiddleware,
   techController.getTechById
 );
 
@@ -102,7 +102,11 @@ router.get(
  *         description: Bad Request
  *
  */
-router.put('/technologies/:id', auth.authMiddleware, techController.updateTech);
+router.put(
+  '/technologies/:id',
+  auth.authAdminMiddleware,
+  techController.updateTech
+);
 
 /**
  * @swagger
@@ -116,7 +120,7 @@ router.put('/technologies/:id', auth.authMiddleware, techController.updateTech);
  *        name: technologyId
  *        required: true
  *        description: The Id of the technology to delete
- *     description: Return album object
+ *     description: Return message delete successful
  *     responses:
  *       200:
  *         description: DELETE Successfully.
@@ -126,7 +130,7 @@ router.put('/technologies/:id', auth.authMiddleware, techController.updateTech);
  */
 router.delete(
   '/technologies/:id',
-  auth.authMiddleware,
+  auth.authAdminMiddleware,
   techController.deleteTech
 );
 

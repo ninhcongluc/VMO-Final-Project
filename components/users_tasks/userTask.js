@@ -1,25 +1,23 @@
 const { DataTypes } = require('sequelize');
 const db = require('../../configs/db');
 
-const Role = db.define(
-  'roles',
+const userTask = db.define(
+  'users_tasks',
   {
-    id: {
+    userId: {
       type: DataTypes.UUID,
-      defaultValue: DataTypes.UUIDV4,
       primaryKey: true,
       allowNull: false,
     },
-    name: {
-      type: DataTypes.STRING,
+    taskId: {
+      type: DataTypes.UUID,
+      primaryKey: true,
       allowNull: false,
-      unique: true,
     },
   },
   {
-    freezeTableName: true,
     timestamps: true,
   }
 );
 
-module.exports = Role;
+module.exports = userTask;

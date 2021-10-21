@@ -1,6 +1,12 @@
 const { DataTypes } = require('sequelize');
 
 const db = require('../../configs/db');
+const Tech = require('../techs/tech');
+const projectTech = require('../projects_techs/projectTech');
+const Type = require('../project_type/type');
+const Status = require('../project_status/status');
+const User = require('../users/user');
+const Task = require('../tasks/task');
 
 const Project = db.define(
   'projects',
@@ -37,10 +43,6 @@ const Project = db.define(
       type: DataTypes.UUID,
       allowNull: true,
     },
-    technologies: {
-      type: DataTypes.ARRAY(DataTypes.STRING),
-      allowNull: true,
-    },
     unitId: {
       type: DataTypes.UUID,
       allowNull: true,
@@ -55,5 +57,11 @@ const Project = db.define(
     timestamps: true,
   }
 );
+
+Project.belongsToMany(Tech, { through: projectTech });
+Project.belongsTo(Type, { foreignKey: 'typeId' });
+Project.belongsTo(Status, { foreignKey: 'statusId' });
+Project.belongsTo(User, { foreignKey: 'customerId' });
+Project.hasMany(Task, { foreignKey: 'projectId' });
 
 module.exports = Project;

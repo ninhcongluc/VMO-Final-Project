@@ -1,15 +1,38 @@
 const Project = require('./project');
+const Type = require('../project_type/type');
+const Status = require('../project_status/status');
+const User = require('../users/user');
+const Tech = require('../techs/tech');
 
-const createProject = (name, description, startDate, endDate) =>
+const createProject = (
+  name,
+  description,
+  typeId,
+  statusId,
+  startDate,
+  endDate,
+  unitId,
+  customerId
+) =>
   Project.create({
     name,
     description,
+    typeId,
+    statusId,
     startDate,
     endDate,
+    unitId,
+    customerId,
   });
 
-const findAll = () => Project.findAll();
+const findAll = () =>
+  Project.findAll({
+    include: [Type, Status, User, Tech],
+  });
+
+const findById = id => Project.findByPk(id);
 module.exports = {
   createProject,
   findAll,
+  findById,
 };

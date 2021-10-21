@@ -1,8 +1,9 @@
 const { DataTypes } = require('sequelize');
+
 const db = require('../../configs/db');
 
-const Role = db.define(
-  'roles',
+const Tech = db.define(
+  'techs',
   {
     id: {
       type: DataTypes.UUID,
@@ -12,8 +13,13 @@ const Role = db.define(
     },
     name: {
       type: DataTypes.STRING,
-      allowNull: false,
       unique: true,
+      allowNull: false,
+    },
+    status: {
+      type: DataTypes.BOOLEAN,
+      allowNull: true,
+      defaultValue: true,
     },
   },
   {
@@ -22,4 +28,4 @@ const Role = db.define(
   }
 );
 
-module.exports = Role;
+module.exports = Tech;

@@ -4,12 +4,25 @@ const projectValidation = require('./projectValidation');
 const projectService = require('./projectService');
 
 const createProject = async (req, res) => {
-  const { name, description, startDate, endDate } = req.body;
+  const {
+    name,
+    description,
+    typeId,
+    statusId,
+    startDate,
+    endDate,
+    unitId,
+    customerId,
+  } = req.body;
   const isValid = await projectValidation.validate({
     name,
     description,
+    typeId,
+    statusId,
     startDate,
     endDate,
+    unitId,
+    customerId,
   });
   if (isValid.error) {
     res.status(StatusCodes.BAD_REQUEST).send(isValid.error.message);
@@ -18,8 +31,12 @@ const createProject = async (req, res) => {
     const project = await projectService.createProject(
       name,
       description,
+      typeId,
+      statusId,
       startDate,
-      endDate
+      endDate,
+      unitId,
+      customerId
     );
     res.status(StatusCodes.OK).send(project);
   } catch (error) {

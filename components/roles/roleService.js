@@ -8,4 +8,17 @@ const findById = rid =>
 const createRole = name => Role.create({ name });
 
 const findAll = () => Role.findAll();
-module.exports = { findById, createRole, findAll };
+
+const findRoleByName = name => Role.findOne({ where: { name } });
+
+const updateById = (id, name) => Role.update({ name }, { where: { id } });
+
+const deleteRoleById = id => Role.destroy({ where: { id } });
+module.exports = {
+  findById,
+  createRole,
+  findAll,
+  findRoleByName,
+  updateById,
+  deleteRoleById,
+};

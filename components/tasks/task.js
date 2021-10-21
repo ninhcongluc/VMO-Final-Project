@@ -2,8 +2,8 @@ const { DataTypes } = require('sequelize');
 
 const db = require('../../configs/db');
 
-const Tech = db.define(
-  'technologies',
+const Task = db.define(
+  'tasks',
   {
     id: {
       type: DataTypes.UUID,
@@ -16,10 +16,21 @@ const Tech = db.define(
       unique: true,
       allowNull: false,
     },
-    status: {
-      type: DataTypes.BOOLEAN,
-      allowNull: true,
-      defaultValue: true,
+    description: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    projectId: {
+      type: DataTypes.UUID,
+      allowNull: false,
+    },
+    startDate: {
+      type: DataTypes.DATE,
+      allowNull: false,
+    },
+    endDate: {
+      type: DataTypes.DATE,
+      allowNull: false,
     },
   },
   {
@@ -28,4 +39,4 @@ const Tech = db.define(
   }
 );
 
-module.exports = Tech;
+module.exports = Task;

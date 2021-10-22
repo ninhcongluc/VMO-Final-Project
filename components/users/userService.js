@@ -15,6 +15,12 @@ const findAllUsers = () =>
     include: [Role, Unit],
   });
 
+const findUserByRole = role =>
+  User.findAll({
+    include: [Role],
+
+    where: { role },
+  });
 const findById = uid =>
   User.findOne({
     include: [Role, Unit],
@@ -33,4 +39,5 @@ module.exports = {
   findById,
   updateUserById,
   deleteUserById,
+  findUserByRole,
 };

@@ -53,7 +53,7 @@ router.post('/users', auth.authAdminMiddleware, userController.create);
  *           description: Bad request
  *
  */
-router.get('/users', auth.authAdminMiddleware, userController.getAllUsers);
+router.get('/users', auth.authMiddleware, userController.getAllUsers);
 
 /**
  * @swagger
@@ -75,7 +75,7 @@ router.get('/users', auth.authAdminMiddleware, userController.getAllUsers);
  *         description: Bad Request
  *
  */
-router.get('/users/:id', auth.authAdminMiddleware, userController.getUserById);
+router.get('/users/:id', auth.authMiddleware, userController.getUserById);
 
 /**
  * @swagger
@@ -97,6 +97,16 @@ router.get('/users/:id', auth.authAdminMiddleware, userController.getUserById);
  *         description: Bad Request
  *
  */
-router.delete('/users/:id', auth.authMiddleware, userController.deleteUser);
+router.delete(
+  '/users/:id',
+  auth.authAdminMiddleware,
+  userController.deleteUser
+);
+
+router.get(
+  '/users/role',
+  auth.authAdminMiddleware,
+  userController.getUserByRole
+);
 
 module.exports = router;

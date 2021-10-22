@@ -7,6 +7,7 @@ const Type = require('../project_type/type');
 const Status = require('../project_status/status');
 const User = require('../users/user');
 const Task = require('../tasks/task');
+const Unit = require('../units/unit');
 
 const Project = db.define(
   'projects',
@@ -62,6 +63,7 @@ Project.belongsToMany(Tech, { through: projectTech });
 Project.belongsTo(Type, { foreignKey: 'typeId' });
 Project.belongsTo(Status, { foreignKey: 'statusId' });
 Project.belongsTo(User, { foreignKey: 'customerId' });
+Project.belongsTo(Unit, { foreignKey: 'unitId' });
 Project.hasMany(Task, { foreignKey: 'projectId' });
 
 module.exports = Project;

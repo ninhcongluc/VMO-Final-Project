@@ -20,10 +20,6 @@ const Unit = db.define(
       type: DataTypes.STRING,
       allowNull: false,
     },
-    managerId: {
-      type: DataTypes.UUID,
-      allowNull: true,
-    },
   },
   {
     freezeTableName: true,

@@ -76,6 +76,6 @@ router.post(
  *           description: Bad request
  *
  */
-router.get('/projects', auth.authAdminMiddleware, projectController.getAll);
+router.get('/projects', auth.authMiddleware, projectController.getAll);
 
 module.exports = router;

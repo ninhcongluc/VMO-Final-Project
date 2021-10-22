@@ -57,6 +57,7 @@ const verifyEmail = async (req, res, next) => {
       name: user.name,
       username: user.username,
       roles: user.roles,
+      unit: user.unit,
     },
     process.env.SECRET_KEY,
     {

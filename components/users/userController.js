@@ -72,4 +72,19 @@ const deleteUser = async (req, res) => {
   }
 };
 
-module.exports = { create, getAllUsers, getUserById, deleteUser };
+const getUserByRole = async (req, res) => {
+  const { role } = req.body;
+  try {
+    const users = await userService.getUserByRole(role);
+    res.status(StatusCodes.OK).send(users);
+  } catch (error) {
+    res.status(StatusCodes.BAD_REQUEST).send(error);
+  }
+};
+module.exports = {
+  create,
+  getAllUsers,
+  getUserById,
+  deleteUser,
+  getUserByRole,
+};

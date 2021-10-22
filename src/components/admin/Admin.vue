@@ -16,7 +16,9 @@
           </li>
 
           <li>
-            <a href=""><i class="fab fa-node-js"></i><span>Technology</span></a>
+            <a href="/admin_manager/technologies"
+              ><i class="fab fa-node-js"></i><span>Technology</span></a
+            >
           </li>
           <li>
             <a href="/admin_manager/members"
@@ -24,10 +26,12 @@
             >
           </li>
           <li>
-            <a href=""><i class="fab fa-unity"></i><span>Units</span></a>
+            <a href="/admin_manager/units"
+              ><i class="fab fa-unity"></i><span>Units</span></a
+            >
           </li>
           <li>
-            <a href=""
+            <a href="/admin_manager/projects"
               ><i class="fas fa-project-diagram"></i><span>Projects</span></a
             >
           </li>
@@ -109,21 +113,10 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <td>UI/UX Design</td>
-                      <td>Frontend</td>
-                      <td>
-                        <span class="status pink"></span>
-                        inprogress
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>Shoe Shop</td>
-                      <td>Mobile Team</td>
-                      <td>
-                        <span class="status orange"></span>
-                        pending
-                      </td>
+                    <tr v-for="project in projects" :key="project.id">
+                      <td>{{ project.name }}</td>
+                      <td>{{ project.unit.name }}</td>
+                      <td>{{ project.status.name }}</td>
                     </tr>
                   </tbody>
                 </table>
@@ -140,12 +133,18 @@
               ></Button>
             </div>
             <div class="card-body">
-              <div class="customer">
+              <div
+                class="customer"
+                v-for="customer in customers"
+                :key="customer.id"
+              >
                 <div>
-                  <h4><i class="fas fa-file-signature"></i> Loki</h4>
-                  <i class="fas fa-envelope-square"></i> loki@gmail.com
+                  <h4>
+                    <i class="fas fa-file-signature"></i> {{ customer.name }}
+                  </h4>
+                  <i class="fas fa-envelope-square"></i> {{ customer.username }}
                 </div>
-                <div><i class="fas fa-phone"></i> 0914134253</div>
+                <div><i class="fas fa-phone"></i> {{ customer.phone }}</div>
               </div>
             </div>
           </div>
@@ -167,6 +166,8 @@ export default {
       countProject: 0,
       countUnit: 0,
       errorMessage: '',
+      projects: [],
+      customers: [],
     };
   },
   async created() {
@@ -189,6 +190,7 @@ export default {
         this.countMember += 1;
       });
       const projects = await axios.get('/projects');
+      this.projects = projects.data;
       projects.data.forEach(() => {
         this.countProject += 1;
       });
@@ -196,6 +198,14 @@ export default {
       units.data.forEach(() => {
         this.countUnit += 1;
       });
+
+      users.data.forEach(user => {
+        const isCustomer = user.roles.some(role => role.name === 'customer');
+        if (isCustomer) {
+          this.customers.push(user);
+        }
+      });
+      console.log(this.customers);
     } catch (error) {
       this.errorMessage = error.response.data;
       console.log('error' + this.errorMessage);

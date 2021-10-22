@@ -50,6 +50,7 @@
 
 <script>
 import axios from 'axios';
+import jwt from 'jsonwebtoken';
 export default {
   name: 'Login',
   data() {
@@ -66,8 +67,22 @@ export default {
           username: this.username,
           password: this.password,
         });
-        localStorage.setItem('token', response.data);
-        this.$router.push({ path: '/home' });
+        const token = response.data;
+        localStorage.setItem('token', token);
+        // this.$router.push({ path: '/home' });
+        const user = jwt.verify(token, process.env.VUE_APP_SOMEKEY);
+        const isAdmin = user.roles.some(role => role.name === 'admin');
+        if (isAdmin) {
+          this.$router.push({ path: '/admin_manager' });
+        }
+        const isManager = user.roles.some(role => role.name === 'manager');
+        if (isManager) {
+          this.$router.push({ path: '/manager' });
+        }
+        const isEmployee = user.roles.some(role => role.name === 'employee');
+        if (isEmployee) {
+          this.$router.push({ path: '/employee' });
+        }
       } catch (error) {
         // console.log(error.response);
         this.errorMessage = error.response.data;
@@ -123,7 +138,6 @@ export default {
 
 #login {
   margin-top: 30px;
-  background-color: rgb(32, 175, 32);
 }
 .header {
   margin-top: 10px;

@@ -22,7 +22,9 @@
         />
         <label id="error_mess">{{ errorMessage }}</label>
         <br />
-        <button class="send_mail btn btn-">Send password reset email</button>
+        <button class="send_mail btn btn-primary">
+          Send password reset email
+        </button>
       </form>
     </div>
     <div class="form" v-if="status">
@@ -122,7 +124,6 @@ h3 {
   height: 35px;
   margin-left: 15px;
   color: white;
-  background-color: green;
 }
 
 #error_mess {

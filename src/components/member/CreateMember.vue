@@ -14,11 +14,8 @@
               ><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a
             >
           </li>
-
           <li>
-            <a href="/admin_manager/technologies"
-              ><i class="fab fa-node-js"></i><span>Technology</span></a
-            >
+            <a href=""><i class="fab fa-node-js"></i><span>Technology</span></a>
           </li>
           <li>
             <a href="/admin_manager/members"
@@ -26,12 +23,10 @@
             >
           </li>
           <li>
-            <a href="/admin_manager/units"
-              ><i class="fab fa-unity"></i><span>Units</span></a
-            >
+            <a href=""><i class="fab fa-unity"></i><span>Units</span></a>
           </li>
           <li>
-            <a href="/admin_manager/projects"
+            <a href=""
               ><i class="fas fa-project-diagram"></i><span>Projects</span></a
             >
           </li>
@@ -40,48 +35,35 @@
     </div>
   </div>
   <div class="main-content">
-    <input type="text" v-model="key" placeholder="search by email" />
-    <br />
-    <a href="/admin_manager/members/create">Create user</a>
-    <table class="table">
-      <thead class="thead-light">
-        <tr>
-          <th scope="col">#</th>
-          <th scope="col">Email</th>
-          <th scope="col">Name</th>
-          <th scope="col">Phone</th>
-          <th scope="col">Address</th>
-          <th scope="col">Role</th>
-          <th scope="col">Action</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="(user, id) in filteredUsers" :key="user.id">
-          <th scope="row">{{ id + 1 }}</th>
-          <td>{{ user.username }}</td>
-          <td>{{ user.name }}</td>
-          <td>{{ user.phone }}</td>
-          <td>{{ user.address }}</td>
-          <td>
-            <template v-for="role in user.roles" :key="role.id">
-              {{ role.name }}
-            </template>
-          </td>
-
-          <td>
-            <button type="button" class="btn btn-warning">Update</button>
-            <button type="button" class="btn btn-danger">Delete</button>
-            <button
-              @click="moreInfo(user.id)"
-              type="button"
-              class="btn btn-info"
-            >
-              Info
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <form>
+      <div class="form-group">
+        <label for="exampleInputEmail1">Username</label>
+        <input
+          type="email"
+          class="form-control"
+          id="exampleInputEmail1"
+          aria-describedby="emailHelp"
+          placeholder="Enter email"
+        />
+        <small id="emailHelp" class="form-text text-muted"
+          >Enter email adress</small
+        >
+      </div>
+      <div class="form-group">
+        <label for="exampleInputPassword1">Password</label>
+        <input
+          type="password"
+          class="form-control"
+          id="exampleInputPassword1"
+          placeholder="Password"
+        />
+      </div>
+      <div class="form-group">
+        <label for="name">Name</label>
+        <input type="text" class="form-control" placeholder="Enter fullname" />
+      </div>
+      <button type="submit" class="btn btn-primary">Create</button>
+    </form>
   </div>
 </template>
 
@@ -89,11 +71,17 @@
 import axios from 'axios';
 import jwt from 'jsonwebtoken';
 export default {
-  name: 'Member',
+  name: 'CreateMember',
   data() {
     return {
-      users: [],
-      key: '',
+      technologies: [],
+      roles: [],
+      units: [],
+      user: {
+        username: '',
+        password: '',
+        name: '',
+      },
     };
   },
   async created() {
@@ -107,26 +95,15 @@ export default {
   },
   async mounted() {
     try {
-      const users = await axios.get('/users');
-      this.users = users.data;
-      console.log(this.users);
+      const technologies = await axios.get('/technologies');
+      this.technologies = technologies.data;
+      const roles = await axios.get('/roles');
+      this.roles = roles.data;
     } catch (error) {
       console.log(error.message);
     }
   },
-  computed: {
-    filteredUsers: function () {
-      return this.users.filter(user => {
-        return user.username.toLowerCase().match(this.key.toLowerCase());
-      });
-    },
-  },
-
-  methods: {
-    async moreInfo(id) {
-      this.$router.push(`/admin_manager/members/${id}`);
-    },
-  },
+  methods: {},
 };
 </script>
 
@@ -196,7 +173,7 @@ export default {
 }
 .main-content {
   transition: margin-left 300ms;
-  margin-left: 345px;
+  margin-left: 360px;
 }
 header {
   display: flex;

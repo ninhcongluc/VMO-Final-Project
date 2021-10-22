@@ -40,33 +40,41 @@
     </div>
   </div>
   <div class="main-content">
-    <input type="text" v-model="key" placeholder="search by email" />
+    <input type="text" v-model="key" placeholder="search by name" />
+
     <br />
-    <a href="/admin_manager/members/create">Create user</a>
+    <a href="/admin_manager/members/create">Create project</a>
     <table class="table">
       <thead class="thead-light">
         <tr>
           <th scope="col">#</th>
-          <th scope="col">Email</th>
           <th scope="col">Name</th>
-          <th scope="col">Phone</th>
-          <th scope="col">Address</th>
-          <th scope="col">Role</th>
+          <th scope="col">Type</th>
+          <th scope="col">Status</th>
+          <th scope="col">Tech</th>
+          <th scope="col">Unit</th>
+          <th scope="col">Customer</th>
+          <th scope="col">End Date</th>
           <th scope="col">Action</th>
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(user, id) in filteredUsers" :key="user.id">
+        <tr v-for="(project, id) in filteredProjects" :key="project.id">
           <th scope="row">{{ id + 1 }}</th>
-          <td>{{ user.username }}</td>
-          <td>{{ user.name }}</td>
-          <td>{{ user.phone }}</td>
-          <td>{{ user.address }}</td>
+          <td>{{ project.name }}</td>
+          <td>{{ project.type.name }}</td>
+          <td class="maintain" v-if="project.status.name === 'Maintain'">
+            {{ project.status.name }}
+          </td>
+          <td class="inprogress" v-else>{{ project.status.name }}</td>
           <td>
-            <template v-for="role in user.roles" :key="role.id">
-              {{ role.name }}
+            <template v-for="tech in project.techs" :key="tech.id">
+              {{ tech.name }}
             </template>
           </td>
+          <td>{{ project.unit.name }}</td>
+          <td>{{ project.user.name }}</td>
+          <td>{{ project.endDate }}</td>
 
           <td>
             <button type="button" class="btn btn-warning">Update</button>
@@ -89,10 +97,10 @@
 import axios from 'axios';
 import jwt from 'jsonwebtoken';
 export default {
-  name: 'Member',
+  name: 'Project',
   data() {
     return {
-      users: [],
+      projects: [],
       key: '',
     };
   },
@@ -107,26 +115,22 @@ export default {
   },
   async mounted() {
     try {
-      const users = await axios.get('/users');
-      this.users = users.data;
-      console.log(this.users);
+      const projects = await axios.get('/projects');
+      this.projects = projects.data;
+
+      console.log(this.filteredProjects);
     } catch (error) {
       console.log(error.message);
     }
   },
   computed: {
-    filteredUsers: function () {
-      return this.users.filter(user => {
-        return user.username.toLowerCase().match(this.key.toLowerCase());
+    filteredProjects: function () {
+      return this.projects.filter(project => {
+        return project.name.toLowerCase().match(this.key.toLowerCase());
       });
     },
   },
-
-  methods: {
-    async moreInfo(id) {
-      this.$router.push(`/admin_manager/members/${id}`);
-    },
-  },
+  methods: {},
 };
 </script>
 
@@ -278,6 +282,18 @@ main {
   padding: 2rem 1.5rem;
   background: #f1f5f9;
   min-height: calc(100vh - 90px);
+}
+
+.maintain {
+  color: white;
+  background-color: rgb(184, 152, 46);
+  width: 10px !important;
+}
+
+.inprogress {
+  color: white;
+  background-color: red;
+  width: 10px !important;
 }
 
 @media only screen and (max-width: 1200px) {

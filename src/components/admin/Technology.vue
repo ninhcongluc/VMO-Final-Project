@@ -40,44 +40,21 @@
     </div>
   </div>
   <div class="main-content">
-    <input type="text" v-model="key" placeholder="search by email" />
-    <br />
-    <a href="/admin_manager/members/create">Create user</a>
+    <a href="/admin_manager/technologies/create">Create technology</a>
     <table class="table">
       <thead class="thead-light">
         <tr>
           <th scope="col">#</th>
-          <th scope="col">Email</th>
           <th scope="col">Name</th>
-          <th scope="col">Phone</th>
-          <th scope="col">Address</th>
-          <th scope="col">Role</th>
-          <th scope="col">Action</th>
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(user, id) in filteredUsers" :key="user.id">
+        <tr v-for="(tech, id) in technologies" :key="tech.id">
           <th scope="row">{{ id + 1 }}</th>
-          <td>{{ user.username }}</td>
-          <td>{{ user.name }}</td>
-          <td>{{ user.phone }}</td>
-          <td>{{ user.address }}</td>
-          <td>
-            <template v-for="role in user.roles" :key="role.id">
-              {{ role.name }}
-            </template>
-          </td>
-
+          <td>{{ tech.name }}</td>
           <td>
             <button type="button" class="btn btn-warning">Update</button>
             <button type="button" class="btn btn-danger">Delete</button>
-            <button
-              @click="moreInfo(user.id)"
-              type="button"
-              class="btn btn-info"
-            >
-              Info
-            </button>
           </td>
         </tr>
       </tbody>
@@ -89,11 +66,10 @@
 import axios from 'axios';
 import jwt from 'jsonwebtoken';
 export default {
-  name: 'Member',
+  name: 'Technology',
   data() {
     return {
-      users: [],
-      key: '',
+      technologies: [],
     };
   },
   async created() {
@@ -107,26 +83,13 @@ export default {
   },
   async mounted() {
     try {
-      const users = await axios.get('/users');
-      this.users = users.data;
-      console.log(this.users);
+      const technologies = await axios.get('/technologies');
+      this.technologies = technologies.data;
     } catch (error) {
       console.log(error.message);
     }
   },
-  computed: {
-    filteredUsers: function () {
-      return this.users.filter(user => {
-        return user.username.toLowerCase().match(this.key.toLowerCase());
-      });
-    },
-  },
-
-  methods: {
-    async moreInfo(id) {
-      this.$router.push(`/admin_manager/members/${id}`);
-    },
-  },
+  methods: {},
 };
 </script>
 

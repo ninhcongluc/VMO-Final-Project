@@ -1,37 +1,5 @@
 <template>
-  <div id="app" v-bind:class="currentTheme">
-    <div class="theme-options">
-      <div
-        v-bind:class="{ active: currentTheme === 'theme-white' }"
-        @click="switchTheme('theme-white')"
-        class="theme theme-white"
-      ></div>
-      <div
-        v-bind:class="{ active: currentTheme === 'theme-blue' }"
-        @click="switchTheme('theme-blue')"
-        class="theme theme-blue"
-      ></div>
-      <div
-        v-bind:class="{ active: currentTheme === 'theme-orange' }"
-        @click="switchTheme('theme-orange')"
-        class="theme theme-orange"
-      ></div>
-      <div
-        v-bind:class="{ active: currentTheme === 'theme-purple' }"
-        @click="switchTheme('theme-purple')"
-        class="theme theme-purple"
-      ></div>
-      <div
-        v-bind:class="{ active: currentTheme === 'theme-green' }"
-        @click="switchTheme('theme-green')"
-        class="theme theme-green"
-      ></div>
-      <div
-        v-bind:class="{ active: currentTheme === 'theme-black' }"
-        @click="switchTheme('theme-black')"
-        class="theme theme-black"
-      ></div>
-    </div>
+  <div id="app">
     <router-view />
   </div>
 </template>
@@ -41,16 +9,9 @@ export default {
   name: 'App',
   components: {},
   data() {
-    return {
-      currentTheme: localStorage.getItem('theme-color'),
-    };
+    return {};
   },
-  methods: {
-    switchTheme(theme) {
-      localStorage.setItem('theme-color', theme);
-      this.currentTheme = localStorage.getItem('theme-color');
-    },
-  },
+  methods: {},
 };
 </script>
 
@@ -59,42 +20,7 @@ export default {
 * {
   box-sizing: border-box;
 }
-.theme-options {
-  text-align: center;
 
-  padding-right: 100px;
-}
-.theme {
-  width: 10px;
-  height: 10px;
-  display: inline-block;
-  padding: 10px;
-  border-radius: 4px;
-  margin: 2px 10px;
-  border: 1px solid #fff;
-  opacity: 0.5;
-}
-.theme:active {
-  opacity: 1;
-}
-.theme-white {
-  background-color: #eee;
-}
-.theme-blue {
-  background-color: #1e41c1;
-}
-.theme-orange {
-  background-color: #b64b1e;
-}
-.theme-purple {
-  background-color: #7852ae;
-}
-.theme-green {
-  background-color: #5faf3b;
-}
-.theme-black {
-  background-color: #000;
-}
 body {
   min-height: 100vh;
   display: flex;

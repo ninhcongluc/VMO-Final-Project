@@ -16,4 +16,22 @@ const add = async (req, res) => {
   }
 };
 
-module.exports = { add };
+const getAll = async (req, res) => {
+  try {
+    const userRoles = await userRoleService.findAll();
+    res.status(StatusCodes.OK).send(userRoles);
+  } catch (error) {
+    res.status(StatusCodes.BAD_REQUEST).send(error);
+  }
+};
+
+const deleteUserRole = async (req, res) => {
+  const { userId } = req.params;
+  try {
+    await userRoleService.deleteById(userId);
+    res.status(StatusCodes.OK).send('Deleted Successfully');
+  } catch (error) {
+    res.status(StatusCodes.BAD_REQUEST).send(error);
+  }
+};
+module.exports = { add, getAll, deleteUserRole };

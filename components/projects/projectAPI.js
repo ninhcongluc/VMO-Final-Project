@@ -78,4 +78,30 @@ router.post(
  */
 router.get('/projects', auth.authMiddleware, projectController.getAll);
 
+/**
+ * @swagger
+ * /projects/{projectId}:
+ *   get:
+ *     summary: Get one project by id
+ *     tags:
+ *       - Project
+ *     parameters:
+ *      - in: path
+ *        name: projectId
+ *        required: true
+ *        description: The Id of the project to return
+ *     description: Return project object
+ *     responses:
+ *       200:
+ *         description: Get a project object.
+ *       400:
+ *         description: Bad Request
+ *
+ */
+router.get(
+  '/projects/:id',
+  auth.authMiddleware,
+  projectController.getProjectById
+);
+
 module.exports = router;

@@ -53,7 +53,18 @@ const getAll = async (req, res) => {
   }
 };
 
+const getProjectById = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const project = await projectService.findById(id);
+    res.status(StatusCodes.OK).send(project);
+  } catch (error) {
+    res.status(StatusCodes.BAD_REQUEST).send(error);
+  }
+};
+
 module.exports = {
   createProject,
   getAll,
+  getProjectById,
 };

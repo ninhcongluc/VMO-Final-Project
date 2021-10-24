@@ -7,4 +7,7 @@ const findRoleUser = userId =>
     where: { uid: userId },
   });
 
-module.exports = { addRoleToUser, findRoleUser };
+const findAll = () => userRole.findAll();
+
+const deleteById = id => userRole.destroy({ where: { userId: id } });
+module.exports = { addRoleToUser, findRoleUser, findAll, deleteById };

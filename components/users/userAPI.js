@@ -103,10 +103,26 @@ router.delete(
   userController.deleteUser
 );
 
-router.get(
-  '/users/role',
-  auth.authAdminMiddleware,
-  userController.getUserByRole
-);
+/**
+ * @swagger
+ * /users/{userId}:
+ *   put:
+ *     summary: Update user by Id
+ *     tags:
+ *       - User
+ *     parameters:
+ *      - in: path
+ *        name: userId
+ *        required: true
+ *        description: The Id of the user to update
+ *     description: return updated successfully
+ *     responses:
+ *       200:
+ *         description: UPDATED Successfully.
+ *       400:
+ *         description: Bad Request
+ *
+ */
+router.put('/users/:id', auth.authAdminMiddleware, userController.updateUser);
 
 module.exports = router;

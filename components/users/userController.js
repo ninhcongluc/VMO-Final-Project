@@ -8,8 +8,36 @@ const transporter = require('../../helpers/email');
 const saltRounds = 10;
 
 const create = async (req, res, next) => {
-  const { username, password, name } = req.body;
-  const isValidUser = await userSchema.validate({ username, password, name });
+  const {
+    username,
+    password,
+    confirmPassword,
+    status,
+    name,
+    dob,
+    address,
+    cmt,
+    phone,
+    experience,
+    language,
+    certificate,
+    unitId,
+  } = req.body;
+  const isValidUser = await userSchema.userSchema.validate({
+    username,
+    password,
+    confirmPassword,
+    status,
+    name,
+    dob,
+    address,
+    cmt,
+    phone,
+    experience,
+    language,
+    certificate,
+    unitId,
+  });
   // check valid data
   if (isValidUser.error) {
     return res.status(StatusCodes.BAD_REQUEST).send(isValidUser.error.message);
@@ -25,7 +53,20 @@ const create = async (req, res, next) => {
   try {
     const salt = await bcrypt.genSalt(saltRounds);
     const hash = await bcrypt.hash(password, salt);
-    const createUser = await userService.createUser(username, hash, name);
+    const createUser = await userService.createUser(
+      username,
+      hash,
+      status,
+      name,
+      dob,
+      address,
+      cmt,
+      phone,
+      experience,
+      language,
+      certificate,
+      unitId
+    );
     // send mail
     const options = {
       from: `${process.env.USER}`,
@@ -62,6 +103,55 @@ const getUserById = async (req, res) => {
   }
 };
 
+const updateUser = async (req, res) => {
+  const { id } = req.params;
+  const {
+    status,
+    name,
+    dob,
+    address,
+    cmt,
+    phone,
+    experience,
+    language,
+    certificate,
+    unitId,
+  } = req.body;
+  const isValid = await userSchema.updateSchema.validate({
+    status,
+    name,
+    dob,
+    address,
+    cmt,
+    phone,
+    experience,
+    language,
+    certificate,
+    unitId,
+  });
+  if (isValid.error) {
+    return res.status(StatusCodes.BAD_REQUEST).send(isValid.error.message);
+  }
+  try {
+    await userService.updateById(
+      id,
+      status,
+      name,
+      dob,
+      address,
+      cmt,
+      phone,
+      experience,
+      language,
+      certificate,
+      unitId
+    );
+    return res.status(StatusCodes.OK).send('Updated Successfully');
+  } catch (error) {
+    return res.status(StatusCodes.BAD_REQUEST).send(error);
+  }
+};
+
 const deleteUser = async (req, res) => {
   const { id } = req.params;
   try {
@@ -72,19 +162,10 @@ const deleteUser = async (req, res) => {
   }
 };
 
-const getUserByRole = async (req, res) => {
-  const { role } = req.body;
-  try {
-    const users = await userService.getUserByRole(role);
-    res.status(StatusCodes.OK).send(users);
-  } catch (error) {
-    res.status(StatusCodes.BAD_REQUEST).send(error);
-  }
-};
 module.exports = {
   create,
   getAllUsers,
   getUserById,
+  updateUser,
   deleteUser,
-  getUserByRole,
 };

@@ -7,20 +7,40 @@ const findUserByUsername = username =>
 
 const findUserByUnitId = unitId => User.findAll({ where: { unitId } });
 
-const createUser = (username, password, name) =>
-  User.create({ username, password, name });
+const createUser = (
+  username,
+  password,
+  status,
+  name,
+  dob,
+  address,
+  cmt,
+  phone,
+  experience,
+  language,
+  certificate,
+  unitId
+) =>
+  User.create({
+    username,
+    password,
+    status,
+    name,
+    dob,
+    address,
+    cmt,
+    phone,
+    experience,
+    language,
+    certificate,
+    unitId,
+  });
 
 const findAllUsers = () =>
   User.findAll({
     include: [Role, Unit],
   });
 
-const findUserByRole = role =>
-  User.findAll({
-    include: [Role],
-
-    where: { role },
-  });
 const findById = uid =>
   User.findOne({
     include: [Role, Unit],
@@ -31,6 +51,34 @@ const deleteUserById = id => User.destroy({ where: { id } });
 const updateUserById = (id, newPassword) =>
   User.update({ password: newPassword }, { where: { id } });
 
+const updateById = (
+  id,
+  status,
+  name,
+  dob,
+  address,
+  cmt,
+  phone,
+  experience,
+  language,
+  certificate,
+  unitId
+) =>
+  User.update(
+    {
+      status,
+      name,
+      dob,
+      address,
+      cmt,
+      phone,
+      experience,
+      language,
+      certificate,
+      unitId,
+    },
+    { where: { id } }
+  );
 module.exports = {
   findUserByUsername,
   findUserByUnitId,
@@ -39,5 +87,5 @@ module.exports = {
   findById,
   updateUserById,
   deleteUserById,
-  findUserByRole,
+  updateById,
 };

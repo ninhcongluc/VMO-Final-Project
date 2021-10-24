@@ -40,25 +40,43 @@
     </div>
   </div>
   <div class="main-content">
+    <input type="text" v-model="key" placeholder="search by name" />
+    <br />
     <a href="/admin_manager/technologies/create">Create technology</a>
     <table class="table">
       <thead class="thead-light">
         <tr>
           <th scope="col">#</th>
           <th scope="col">Name</th>
+          <th scope="col">Status</th>
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(tech, id) in technologies" :key="tech.id">
+        <tr v-for="(tech, id) in filteredTech" :key="tech.id">
           <th scope="row">{{ id + 1 }}</th>
           <td>{{ tech.name }}</td>
+          <td v-if="tech.status === true">Active</td>
+          <td v-else>Inactive</td>
           <td>
-            <button type="button" class="btn btn-warning">Update</button>
-            <button type="button" class="btn btn-danger">Delete</button>
+            <button
+              @click="hanadleUpdate(tech.id)"
+              type="button"
+              class="btn btn-warning"
+            >
+              Update
+            </button>
+            <button
+              @click="handleDelete(tech.id)"
+              type="button"
+              class="btn btn-danger"
+            >
+              Delete
+            </button>
           </td>
         </tr>
       </tbody>
     </table>
+    <h3>{{ message }}</h3>
   </div>
 </template>
 
@@ -70,6 +88,8 @@ export default {
   data() {
     return {
       technologies: [],
+      message: '',
+      key: '',
     };
   },
   async created() {
@@ -89,7 +109,28 @@ export default {
       console.log(error.message);
     }
   },
-  methods: {},
+  computed: {
+    filteredTech: function () {
+      return this.technologies.filter(tech => {
+        return tech.name.toLowerCase().match(this.key.toLowerCase());
+      });
+    },
+  },
+  methods: {
+    hanadleUpdate(id) {
+      this.$router.push(`/admin_manager/technologies/update/${id}`);
+    },
+
+    async handleDelete(id) {
+      try {
+        const res = await axios.delete(`/technologies/${id}`);
+        this.message = res.data;
+        this.$router.push(`/admin_manager/technologies`);
+      } catch (error) {
+        this.message = error.response.message;
+      }
+    },
+  },
 };
 </script>
 

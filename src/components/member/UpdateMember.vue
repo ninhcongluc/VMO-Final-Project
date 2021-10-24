@@ -10,12 +10,14 @@
       <div class="sidebar-menu">
         <ul>
           <li>
-            <a href=""
+            <a href="/admin_manager"
               ><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a
             >
           </li>
           <li>
-            <a href=""><i class="fab fa-node-js"></i><span>Technology</span></a>
+            <a href="/admin_manager/technologies"
+              ><i class="fab fa-node-js"></i><span>Technology</span></a
+            >
           </li>
           <li>
             <a href="/admin_manager/members"
@@ -23,10 +25,12 @@
             >
           </li>
           <li>
-            <a href=""><i class="fab fa-unity"></i><span>Units</span></a>
+            <a href="/admin_manager/units"
+              ><i class="fab fa-unity"></i><span>Units</span></a
+            >
           </li>
           <li>
-            <a href=""
+            <a href="/admin_manager/projects"
               ><i class="fas fa-project-diagram"></i><span>Projects</span></a
             >
           </li>
@@ -35,37 +39,21 @@
     </div>
   </div>
   <div class="main-content">
-    <form @submit.prevent="handleSubmit" action="">
-      <h3>Add User Page</h3>
-      <span><small>User added by admintor</small></span>
+    <form @submit.prevent="handleUpdate" action="">
+      <h3>Update Member Page</h3>
+      <input type="hidden" id="id" name="id" v-model="id" />
+
+      <span><small>Member updated by admintor</small></span>
       <div class="form-group">
-        <label for="">Username</label>
+        <label for="">Email</label>
         <input
           type="text"
+          name=""
           v-model="user.username"
+          disabled="disabled"
           class="form-control"
-          placeholder="Username"
         />
       </div>
-      <div class="form-group">
-        <label for="">Password</label>
-        <input
-          type="password"
-          v-model="user.password"
-          class="form-control"
-          placeholder="Password"
-        />
-      </div>
-      <div class="form-group">
-        <label for="">Confirm Password</label>
-        <input
-          type="password"
-          class="form-control"
-          v-model="user.confirmPassword"
-          placeholder="Confirm Password"
-        />
-      </div>
-
       <div class="form-group">
         <label for="exampleInputPassword1">Status</label>
         <select
@@ -73,89 +61,72 @@
           id="inputGroupSelect01"
           v-model="user.status"
         >
-          <option value="true" selected>Active</option>
+          <option value="true" :selected="user.status === true">Acticve</option>
           <option value="false">Inactive</option>
         </select>
       </div>
-
       <div class="form-group">
         <label for="">Name</label>
         <input
           type="text"
+          name="name"
           v-model="user.name"
           class="form-control"
-          placeholder="Name"
         />
       </div>
-
       <div class="form-group">
         <label for="">Date Of Birth</label>
-        <input
-          type="date"
-          class="form-control"
-          v-model="user.dob"
-          placeholder="02/12/2000"
-        />
+        <input type="date" name="dob" v-model="user.dob" class="form-control" />
       </div>
       <div class="form-group">
         <label for="">Address</label>
         <input
           type="text"
-          class="form-control"
+          name="address"
           v-model="user.address"
-          placeholder="HCM...."
+          class="form-control"
         />
       </div>
-
       <div class="form-group">
         <label for="">CardId</label>
-        <input
-          type="text"
-          class="form-control"
-          v-model="user.cmt"
-          placeholder="CCCD"
-        />
+        <input type="text" name="cmt" v-model="user.cmt" class="form-control" />
       </div>
-
       <div class="form-group">
         <label for="">Phone</label>
         <input
           type="text"
-          class="form-control"
+          name="phone"
           v-model="user.phone"
-          placeholder="phone number"
+          class="form-control"
         />
       </div>
-
       <div class="form-group">
         <label for="">Experience</label>
         <input
           type="text"
-          class="form-control"
+          name="experience"
           v-model="user.experience"
-          placeholder="num of exp"
+          class="form-control"
         />
       </div>
-
       <div class="form-group">
         <label for="">Language</label>
         <input
           type="text"
-          class="form-control"
+          name="language"
           v-model="user.language"
-          placeholder="English..."
+          class="form-control"
         />
       </div>
       <div class="form-group">
         <label for="">Certificate</label>
         <input
           type="text"
-          class="form-control"
+          name="certificate"
           v-model="user.certificate"
-          placeholder="Code Battle"
+          class="form-control"
         />
       </div>
-
       <div class="form-group">
         <label for="exampleInputPassword1">Unit</label>
         <select
@@ -167,19 +138,16 @@
             v-for="unit in units"
             :key="unit.id"
             :value="unit.id"
-            selected
+            :selected="unit.id === user.unitId"
           >
             {{ unit.name }}
           </option>
         </select>
       </div>
 
-      <br />
-
-      <button class="btn btn-primary btn-block">Add User</button>
+      <button class="btn btn-primary btn-block">Update User</button>
     </form>
-
-    {{ response }}
+    {{ message }}
   </div>
 </template>
 
@@ -187,14 +155,10 @@
 import axios from 'axios';
 import jwt from 'jsonwebtoken';
 export default {
-  name: 'CreateMember',
+  name: 'UpdateMember',
   data() {
     return {
-      units: [],
       user: {
-        username: '',
-        password: '',
-        confirmPassword: '',
         status: true,
         name: '',
         dob: '',
@@ -206,7 +170,9 @@ export default {
         certificate: '',
         unitId: '',
       },
-      response: '',
+      units: [],
+      id: this.$route.params.id,
+      message: '',
     };
   },
   async created() {
@@ -219,21 +185,20 @@ export default {
     }
   },
   async mounted() {
-    try {
-      const units = await axios.get('/units');
-      this.units = units.data;
-    } catch (error) {
-      console.log(error.response.message);
-    }
+    const user = await axios.get(`/users/${this.id}`);
+    this.user = user.data;
+    const units = await axios.get(`/units`);
+    this.units = units.data;
   },
   methods: {
-    async handleSubmit() {
+    async handleUpdate() {
       try {
-        const user = await axios.post('/users', this.user);
-        this.response = user.data;
-        this.$router.push({ path: '/admin_manager/members/create' });
+        const user = await axios.put(`/users/${this.id}`, this.user);
+        this.message = user.data;
+        console.log(this.message);
+        this.$router.push(`/admin_manager/members/update/${this.id}`);
       } catch (error) {
-        this.response = error.response.data;
+        this.message = error.response.data;
       }
     },
   },

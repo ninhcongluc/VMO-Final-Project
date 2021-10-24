@@ -69,8 +69,20 @@
           </td>
 
           <td>
-            <button type="button" class="btn btn-warning">Update</button>
-            <button type="button" class="btn btn-danger">Delete</button>
+            <button
+              @click="handleUpdate(user.id)"
+              type="button"
+              class="btn btn-warning"
+            >
+              Update
+            </button>
+            <button
+              @click="handleDelete(user.id)"
+              type="button"
+              class="btn btn-danger"
+            >
+              Delete
+            </button>
             <button
               @click="moreInfo(user.id)"
               type="button"
@@ -82,6 +94,7 @@
         </tr>
       </tbody>
     </table>
+    {{ message }}
   </div>
 </template>
 
@@ -94,6 +107,7 @@ export default {
     return {
       users: [],
       key: '',
+      message: '',
     };
   },
   async created() {
@@ -125,6 +139,18 @@ export default {
   methods: {
     async moreInfo(id) {
       this.$router.push(`/admin_manager/members/${id}`);
+    },
+    handleUpdate(id) {
+      this.$router.push(`/admin_manager/members/update/${id}`);
+    },
+    async handleDelete(id) {
+      try {
+        const res = await axios.delete(`/users/${id}`);
+        this.message = res.data;
+        this.$router.push(`/admin_manager/members`);
+      } catch (error) {
+        this.message = error.response.data;
+      }
     },
   },
 };

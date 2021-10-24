@@ -14,6 +14,9 @@ import Employee from './components/employee/Employee.vue';
 import NotFound from './components/NotFound.vue';
 import Unit from './components/admin/Unit.vue';
 import Project from './components/admin/Project.vue';
+import CreateTech from './components/technology/CreateTech.vue';
+import UpdateTech from './components/technology/UpdateTech.vue';
+import UpdateMember from './components/member/UpdateMember.vue';
 
 const routes = [
   {
@@ -85,6 +88,21 @@ const routes = [
     path: '/admin_manager/projects',
     name: 'Project',
     component: Project,
+  },
+  {
+    path: '/admin_manager/technologies/create',
+    name: 'CreateTech',
+    component: CreateTech,
+  },
+  {
+    path: '/admin_manager/technologies/update/:id',
+    name: 'UpdateTech',
+    component: UpdateTech,
+  },
+  {
+    path: '/admin_manager/members/update/:id',
+    name: 'UpdateMember',
+    component: UpdateMember,
   },
 ];
 

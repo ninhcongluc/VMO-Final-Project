@@ -17,6 +17,12 @@ import Project from './components/admin/Project.vue';
 import CreateTech from './components/technology/CreateTech.vue';
 import UpdateTech from './components/technology/UpdateTech.vue';
 import UpdateMember from './components/member/UpdateMember.vue';
+import ViewMember from './components/admin/ViewMember.vue';
+import CreateUnit from './components/unit/CreateUnit.vue';
+import UpdateUnit from './components/unit/UpdateUnit.vue';
+import ViewProject from './components/admin/ViewProject.vue';
+import CreateProject from './components/project/CreateProject.vue';
+import UpdateProject from './components/project/UpdateProject.vue';
 
 const routes = [
   {
@@ -103,6 +109,36 @@ const routes = [
     path: '/admin_manager/members/update/:id',
     name: 'UpdateMember',
     component: UpdateMember,
+  },
+  {
+    path: '/admin_manager/units/members/:id',
+    name: 'ViewMember',
+    component: ViewMember,
+  },
+  {
+    path: '/admin_manager/units/create',
+    name: 'CreateUnit',
+    component: CreateUnit,
+  },
+  {
+    path: '/admin_manager/units/update/:id',
+    name: 'UpdateUnit',
+    component: UpdateUnit,
+  },
+  {
+    path: '/admin_manager/units/projects/:id',
+    name: 'ViewProject',
+    component: ViewProject,
+  },
+  {
+    path: '/admin_manager/projects/create',
+    name: 'CreateProject',
+    component: CreateProject,
+  },
+  {
+    path: '/admin_manager/projects/update/:id',
+    name: 'UpdateProject',
+    component: UpdateProject,
   },
 ];
 

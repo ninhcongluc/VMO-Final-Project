@@ -16,7 +16,9 @@
           </li>
 
           <li>
-            <a href=""><i class="fab fa-node-js"></i><span>Technology</span></a>
+            <a href="/admin_manager/technologies"
+              ><i class="fab fa-node-js"></i><span>Technology</span></a
+            >
           </li>
           <li>
             <a href="/admin_manager/members"
@@ -24,10 +26,12 @@
             >
           </li>
           <li>
-            <a href=""><i class="fab fa-unity"></i><span>Units</span></a>
+            <a href="/admin_manager/units"
+              ><i class="fab fa-unity"></i><span>Units</span></a
+            >
           </li>
           <li>
-            <a href=""
+            <a href="/admin_manager/projects"
               ><i class="fas fa-project-diagram"></i><span>Projects</span></a
             >
           </li>
@@ -36,43 +40,31 @@
     </div>
   </div>
   <div class="main-content">
-    <h1>Profile Member:</h1>
-    <ul>
-      <li>
-        <h3>UserID: {{ user.id }}</h3>
-      </li>
-      <li>
-        <h3>Email: {{ user.username }}</h3>
-      </li>
-      <li>
-        <h3>Name: {{ user.name }}</h3>
-      </li>
-      <li>
-        <h3>Adress: {{ user.address }}</h3>
-      </li>
-      <li>
-        <h3>Date Of Birth: {{ user.dob }}</h3>
-      </li>
-      <li>
-        <h3>CMT: {{ user.cmt }}</h3>
-      </li>
-    </ul>
+    <input type="text" v-model="key" placeholder="search by status" />
     <br />
-    <h1>#</h1>
-    <ul>
-      <li>
-        <h3>Technical Skill: {{ user.technical }}</h3>
-      </li>
-      <li>
-        <h3>Experience: {{ user.experience }}</h3>
-      </li>
-      <li>
-        <h3>Language Skill: {{ user.language }}</h3>
-      </li>
-      <li>
-        <h3>Certificate: {{ user.certificate }}</h3>
-      </li>
-    </ul>
+    <table class="table">
+      <thead class="thead-light">
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Name</th>
+          <th scope="col">Status</th>
+          <th scope="col">Type</th>
+          <th scope="col">Start Date</th>
+          <th scope="col">End Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="(project, id) in filteredProjects" :key="project.id">
+          <th scope="row">{{ id + 1 }}</th>
+          <td>{{ project.name }}</td>
+          <td>{{ project.status.name }}</td>
+          <td>{{ project.type.name }}</td>
+          <td>{{ project.startDate }}</td>
+          <td>{{ project.endDate }}</td>
+        </tr>
+      </tbody>
+    </table>
+    {{ message }}
   </div>
 </template>
 
@@ -80,11 +72,13 @@
 import axios from 'axios';
 import jwt from 'jsonwebtoken';
 export default {
-  name: 'MemberInfo',
+  name: 'ViewProject',
   data() {
     return {
+      projects: [],
+      key: '',
+      message: '',
       id: this.$route.params.id,
-      user: {},
     };
   },
   async created() {
@@ -98,13 +92,21 @@ export default {
   },
   async mounted() {
     try {
-      const user = await axios.get(`/users/${this.id}`);
-      this.user = user.data;
-      console.log(this.user);
+      const projects = await axios.get(`/units/projects/${this.id}`);
+      this.projects = projects.data;
+      console.log(this.projects);
     } catch (error) {
-      console.log(error.response.data);
+      console.log(error.response.message);
     }
   },
+  computed: {
+    filteredProjects: function () {
+      return this.projects.filter(project => {
+        return project.status.name.toLowerCase().match(this.key.toLowerCase());
+      });
+    },
+  },
+
   methods: {},
 };
 </script>
@@ -116,7 +118,6 @@ export default {
   box-sizing: border-box;
   list-style-type: none;
   text-decoration: none;
-  font-size: 18px;
 }
 
 .sidebar {
@@ -127,10 +128,12 @@ export default {
   height: 100%;
   background-color: #8fcaca;
   z-index: 100%;
+  font-size: 18px;
 }
 
 .main-content {
   margin-left: 345px;
+  font-size: 14px;
 }
 .sidebar-brand {
   height: 90px;
@@ -174,10 +177,7 @@ export default {
 }
 .main-content {
   transition: margin-left 300ms;
-  margin-left: 400px;
-}
-.main-content h1 {
-  background: #fff;
+  margin-left: 345px;
 }
 header {
   display: flex;

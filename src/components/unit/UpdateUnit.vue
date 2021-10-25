@@ -10,13 +10,14 @@
       <div class="sidebar-menu">
         <ul>
           <li>
-            <a href=""
+            <a href="/admin_manager"
               ><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a
             >
           </li>
-
           <li>
-            <a href=""><i class="fab fa-node-js"></i><span>Technology</span></a>
+            <a href="/admin_manager/technologies"
+              ><i class="fab fa-node-js"></i><span>Technology</span></a
+            >
           </li>
           <li>
             <a href="/admin_manager/members"
@@ -24,10 +25,12 @@
             >
           </li>
           <li>
-            <a href=""><i class="fab fa-unity"></i><span>Units</span></a>
+            <a href="/admin_manager/units"
+              ><i class="fab fa-unity"></i><span>Units</span></a
+            >
           </li>
           <li>
-            <a href=""
+            <a href="/admin_manager/projects"
               ><i class="fas fa-project-diagram"></i><span>Projects</span></a
             >
           </li>
@@ -36,43 +39,33 @@
     </div>
   </div>
   <div class="main-content">
-    <h1>Profile Member:</h1>
-    <ul>
-      <li>
-        <h3>UserID: {{ user.id }}</h3>
-      </li>
-      <li>
-        <h3>Email: {{ user.username }}</h3>
-      </li>
-      <li>
-        <h3>Name: {{ user.name }}</h3>
-      </li>
-      <li>
-        <h3>Adress: {{ user.address }}</h3>
-      </li>
-      <li>
-        <h3>Date Of Birth: {{ user.dob }}</h3>
-      </li>
-      <li>
-        <h3>CMT: {{ user.cmt }}</h3>
-      </li>
-    </ul>
-    <br />
-    <h1>#</h1>
-    <ul>
-      <li>
-        <h3>Technical Skill: {{ user.technical }}</h3>
-      </li>
-      <li>
-        <h3>Experience: {{ user.experience }}</h3>
-      </li>
-      <li>
-        <h3>Language Skill: {{ user.language }}</h3>
-      </li>
-      <li>
-        <h3>Certificate: {{ user.certificate }}</h3>
-      </li>
-    </ul>
+    <form @submit.prevent="handleUpdate" action="">
+      <h3>Update Unit Page</h3>
+      <input type="hidden" id="id" name="id" v-model="id" />
+
+      <span><small>Unit updated by admintor</small></span>
+      <div class="form-group">
+        <label for="">Name</label>
+        <input
+          type="text"
+          name="name"
+          v-model="unit.name"
+          class="form-control"
+        />
+      </div>
+      <div class="form-group">
+        <label for="">Description</label>
+        <input
+          type="text"
+          name="name"
+          v-model="unit.description"
+          class="form-control"
+        />
+      </div>
+
+      <button class="btn btn-primary btn-block">Update Unit</button>
+    </form>
+    {{ message }}
   </div>
 </template>
 
@@ -80,11 +73,15 @@
 import axios from 'axios';
 import jwt from 'jsonwebtoken';
 export default {
-  name: 'MemberInfo',
+  name: 'UpdateUnit',
   data() {
     return {
+      unit: {
+        name: '',
+        description: '',
+      },
       id: this.$route.params.id,
-      user: {},
+      message: '',
     };
   },
   async created() {
@@ -97,15 +94,21 @@ export default {
     }
   },
   async mounted() {
-    try {
-      const user = await axios.get(`/users/${this.id}`);
-      this.user = user.data;
-      console.log(this.user);
-    } catch (error) {
-      console.log(error.response.data);
-    }
+    const unit = await axios.get(`/units/${this.id}`);
+    this.unit = unit.data;
+    console.log(this.unit);
   },
-  methods: {},
+  methods: {
+    async handleUpdate() {
+      try {
+        const unit = await axios.put(`/units/${this.id}`, this.unit);
+        this.message = unit.data;
+        this.$router.push('/admin_manager/units');
+      } catch (error) {
+        this.message = error.response.data;
+      }
+    },
+  },
 };
 </script>
 
@@ -116,7 +119,6 @@ export default {
   box-sizing: border-box;
   list-style-type: none;
   text-decoration: none;
-  font-size: 18px;
 }
 
 .sidebar {
@@ -127,10 +129,12 @@ export default {
   height: 100%;
   background-color: #8fcaca;
   z-index: 100%;
+  font-size: 18px;
 }
 
 .main-content {
   margin-left: 345px;
+  font-size: 14px;
 }
 .sidebar-brand {
   height: 90px;
@@ -174,10 +178,7 @@ export default {
 }
 .main-content {
   transition: margin-left 300ms;
-  margin-left: 400px;
-}
-.main-content h1 {
-  background: #fff;
+  margin-left: 360px;
 }
 header {
   display: flex;

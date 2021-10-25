@@ -125,7 +125,7 @@ export default {
       this.users = users.data;
       console.log(this.users);
     } catch (error) {
-      console.log(error.message);
+      console.log(error.response.data);
     }
   },
   computed: {

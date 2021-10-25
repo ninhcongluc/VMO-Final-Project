@@ -43,7 +43,7 @@
     <input type="text" v-model="key" placeholder="search by name" />
 
     <br />
-    <a href="/admin_manager/members/create">Create project</a>
+    <a href="/admin_manager/projects/create">Create project</a>
     <table class="table">
       <thead class="thead-light">
         <tr>
@@ -77,19 +77,25 @@
           <td>{{ project.endDate }}</td>
 
           <td>
-            <button type="button" class="btn btn-warning">Update</button>
-            <button type="button" class="btn btn-danger">Delete</button>
             <button
-              @click="moreInfo(user.id)"
+              @click="handleUpdate(project.id)"
               type="button"
-              class="btn btn-info"
+              class="btn btn-warning"
             >
-              Info
+              Update
+            </button>
+            <button
+              @click="handleDelete(project.id)"
+              type="button"
+              class="btn btn-danger"
+            >
+              Delete
             </button>
           </td>
         </tr>
       </tbody>
     </table>
+    {{ message }}
   </div>
 </template>
 
@@ -102,6 +108,7 @@ export default {
     return {
       projects: [],
       key: '',
+      message: '',
     };
   },
   async created() {
@@ -120,7 +127,7 @@ export default {
 
       console.log(this.filteredProjects);
     } catch (error) {
-      console.log(error.message);
+      console.log(error.response.data);
     }
   },
   computed: {
@@ -130,7 +137,20 @@ export default {
       });
     },
   },
-  methods: {},
+  methods: {
+    handleUpdate(id) {
+      this.$router.push(`/admin_manager/projects/update/${id}`);
+    },
+    async handleDelete(id) {
+      try {
+        const res = await axios.delete(`/projects/${id}`);
+        this.message = res.data;
+        this.$router.push(`/admin_manager/projects`);
+      } catch (error) {
+        this.message = error.response.data;
+      }
+    },
+  },
 };
 </script>
 

@@ -55,12 +55,39 @@
           <td>{{ unit.name }}</td>
           <td>{{ unit.description }}</td>
           <td>
-            <button type="button" class="btn btn-warning">Update</button>
-            <button type="button" class="btn btn-danger">Delete</button>
+            <button
+              @click="handleUpdate(unit.id)"
+              type="button"
+              class="btn btn-warning"
+            >
+              Update
+            </button>
+            <button
+              @click="handleDelete(unit.id)"
+              type="button"
+              class="btn btn-danger"
+            >
+              Delete
+            </button>
+            <button
+              @click="viewMemberInUnit(unit.id)"
+              type="button"
+              class="btn btn-info"
+            >
+              View Member
+            </button>
+            <button
+              @click="viewProjectInUnit(unit.id)"
+              type="button"
+              class="btn btn-success"
+            >
+              View Project
+            </button>
           </td>
         </tr>
       </tbody>
     </table>
+    {{ message }}
   </div>
 </template>
 
@@ -72,6 +99,7 @@ export default {
   data() {
     return {
       units: [],
+      message: '',
     };
   },
   async created() {
@@ -91,7 +119,26 @@ export default {
       console.log(error.message);
     }
   },
-  methods: {},
+  methods: {
+    viewMemberInUnit(id) {
+      this.$router.push(`/admin_manager/units/members/${id}`);
+    },
+    async handleDelete(id) {
+      try {
+        const res = await axios.delete(`/units/${id}`);
+        this.message = res.data;
+        this.$router.push(`/admin_manager/units`);
+      } catch (error) {
+        this.message = error.response.message;
+      }
+    },
+    async handleUpdate(id) {
+      this.$router.push(`/admin_manager/units/update/${id}`);
+    },
+    viewProjectInUnit(id) {
+      this.$router.push(`/admin_manager/units/projects/${id}`);
+    },
+  },
 };
 </script>
 

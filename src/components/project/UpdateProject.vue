@@ -10,13 +10,14 @@
       <div class="sidebar-menu">
         <ul>
           <li>
-            <a href=""
+            <a href="/admin_manager"
               ><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a
             >
           </li>
-
           <li>
-            <a href=""><i class="fab fa-node-js"></i><span>Technology</span></a>
+            <a href="/admin_manager/technologies"
+              ><i class="fab fa-node-js"></i><span>Technology</span></a
+            >
           </li>
           <li>
             <a href="/admin_manager/members"
@@ -24,10 +25,12 @@
             >
           </li>
           <li>
-            <a href=""><i class="fab fa-unity"></i><span>Units</span></a>
+            <a href="/admin_manager/units"
+              ><i class="fab fa-unity"></i><span>Units</span></a
+            >
           </li>
           <li>
-            <a href=""
+            <a href="/admin_manager/projects"
               ><i class="fas fa-project-diagram"></i><span>Projects</span></a
             >
           </li>
@@ -36,43 +39,125 @@
     </div>
   </div>
   <div class="main-content">
-    <h1>Profile Member:</h1>
-    <ul>
-      <li>
-        <h3>UserID: {{ user.id }}</h3>
-      </li>
-      <li>
-        <h3>Email: {{ user.username }}</h3>
-      </li>
-      <li>
-        <h3>Name: {{ user.name }}</h3>
-      </li>
-      <li>
-        <h3>Adress: {{ user.address }}</h3>
-      </li>
-      <li>
-        <h3>Date Of Birth: {{ user.dob }}</h3>
-      </li>
-      <li>
-        <h3>CMT: {{ user.cmt }}</h3>
-      </li>
-    </ul>
-    <br />
-    <h1>#</h1>
-    <ul>
-      <li>
-        <h3>Technical Skill: {{ user.technical }}</h3>
-      </li>
-      <li>
-        <h3>Experience: {{ user.experience }}</h3>
-      </li>
-      <li>
-        <h3>Language Skill: {{ user.language }}</h3>
-      </li>
-      <li>
-        <h3>Certificate: {{ user.certificate }}</h3>
-      </li>
-    </ul>
+    <form @submit.prevent="handleUpdate" action="">
+      <h3>Update Project Page</h3>
+      <input type="hidden" id="id" name="id" v-model="id" />
+
+      <span><small>Project updated by admintor</small></span>
+      <div class="form-group">
+        <label for="">Name</label>
+        <input
+          type="text"
+          name="name"
+          v-model="project.name"
+          class="form-control"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="">Description</label>
+        <input
+          type="text"
+          name="description"
+          v-model="project.description"
+          class="form-control"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="exampleInputPassword1">Type</label>
+        <select
+          class="custom-select"
+          id="inputGroupSelect01"
+          v-model="project.typeId"
+        >
+          <option
+            v-for="type in types"
+            :key="type.id"
+            :value="type.id"
+            :selected="project.typeId === type.id"
+          >
+            {{ type.name }}
+          </option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="exampleInputPassword1">Status</label>
+        <select
+          class="custom-select"
+          id="inputGroupSelect01"
+          v-model="project.statusId"
+        >
+          <option
+            v-for="status in status"
+            :key="status.id"
+            :value="status.id"
+            :selected="project.statusId === status.id"
+          >
+            {{ status.name }}
+          </option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="">Start Date</label>
+        <input
+          type="date"
+          name=""
+          v-model="project.startDate"
+          class="form-control"
+        />
+      </div>
+      <div class="form-group">
+        <label for="">End Date</label>
+        <input
+          type="date"
+          name=""
+          v-model="project.endDate"
+          class="form-control"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="exampleInputPassword1">Unit</label>
+        <select
+          class="custom-select"
+          id="inputGroupSelect01"
+          v-model="project.unitId"
+        >
+          <option
+            v-for="unit in units"
+            :key="unit.id"
+            :value="unit.id"
+            :selected="project.unitId === unit.id"
+          >
+            {{ unit.name }}
+          </option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="exampleInputPassword1">Customer</label>
+        <select
+          class="custom-select"
+          id="inputGroupSelect01"
+          v-model="project.customerId"
+        >
+          <option
+            v-for="customer in listCustomer"
+            :key="customer.id"
+            :value="customer.id"
+            :selected="project.customerId === customer.id"
+          >
+            {{ customer.username }}
+          </option>
+        </select>
+      </div>
+
+      <button class="btn btn-primary btn-block">Update Project</button>
+    </form>
+    {{ response }}
   </div>
 </template>
 
@@ -80,11 +165,25 @@
 import axios from 'axios';
 import jwt from 'jsonwebtoken';
 export default {
-  name: 'MemberInfo',
+  name: 'UpdateProject',
   data() {
     return {
+      units: [],
+      types: [],
+      status: [],
+      project: {
+        name: '',
+        description: '',
+        typeId: '',
+        statusId: '',
+        startDate: '',
+        endDate: '',
+        unitId: '',
+        customerId: '',
+      },
+      response: '',
+      listCustomer: [],
       id: this.$route.params.id,
-      user: {},
     };
   },
   async created() {
@@ -98,14 +197,37 @@ export default {
   },
   async mounted() {
     try {
-      const user = await axios.get(`/users/${this.id}`);
-      this.user = user.data;
-      console.log(this.user);
+      const units = await axios.get('/units');
+      this.units = units.data;
+      const status = await axios.get('/status');
+      this.status = status.data;
+      const type = await axios.get('/types');
+      this.types = type.data;
+      const users = await axios.get('/users');
+      users.data.forEach(user => {
+        const isCustomer = user.roles.some(role => role.name === 'customer');
+        if (isCustomer) {
+          this.listCustomer.push(user);
+        }
+      });
+      const project = await axios.get(`/projects/${this.id}`);
+      this.project = project.data;
+      console.log(this.project);
     } catch (error) {
-      console.log(error.response.data);
+      this.response = error.response.message;
     }
   },
-  methods: {},
+  methods: {
+    async handleUpdate() {
+      try {
+        const project = await axios.put(`/projects/${this.id}`, this.project);
+        this.response = project.data;
+        this.$router.push(`/admin_manager/projects/update/${this.id}`);
+      } catch (error) {
+        this.response = error.response.data;
+      }
+    },
+  },
 };
 </script>
 
@@ -116,7 +238,6 @@ export default {
   box-sizing: border-box;
   list-style-type: none;
   text-decoration: none;
-  font-size: 18px;
 }
 
 .sidebar {
@@ -127,10 +248,12 @@ export default {
   height: 100%;
   background-color: #8fcaca;
   z-index: 100%;
+  font-size: 18px;
 }
 
 .main-content {
   margin-left: 345px;
+  font-size: 14px;
 }
 .sidebar-brand {
   height: 90px;
@@ -174,10 +297,7 @@ export default {
 }
 .main-content {
   transition: margin-left 300ms;
-  margin-left: 400px;
-}
-.main-content h1 {
-  background: #fff;
+  margin-left: 360px;
 }
 header {
   display: flex;

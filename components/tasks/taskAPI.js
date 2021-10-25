@@ -23,7 +23,7 @@ const auth = require('../auth/authMiddleware');
  *           description: Bad request
  *
  */
-router.get('/tasks', auth.authMiddleware, taskController.getAll);
+router.get('/tasks', auth.authManagerEmployeeMiddleware, taskController.getAll);
 
 /**
  * @swagger
@@ -60,6 +60,6 @@ router.get('/tasks', auth.authMiddleware, taskController.getAll);
  *       400:
  *         description: Bad Request
  */
-router.post('/tasks', auth.authMiddleware, taskController.createTask);
+router.post('/tasks', auth.authManagerMiddleware, taskController.createTask);
 
 module.exports = router;

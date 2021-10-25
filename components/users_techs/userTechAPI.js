@@ -3,6 +3,7 @@ const express = require('express');
 const router = express.Router();
 
 const userTechController = require('./userTechController');
+const auth = require('../auth/authMiddleware');
 
 /**
  * @swagger
@@ -27,6 +28,10 @@ const userTechController = require('./userTechController');
  *       400:
  *         description: Bad Request
  */
-router.post('/users_techs', userTechController.createUserTech);
+router.post(
+  '/users_techs',
+  auth.authAdminMiddleware,
+  userTechController.createUserTech
+);
 
 module.exports = router;

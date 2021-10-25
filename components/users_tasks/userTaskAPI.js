@@ -3,7 +3,7 @@ const express = require('express');
 const router = express.Router();
 
 const userTaskController = require('./userTaskController');
-
+const auth = require('../auth/authMiddleware');
 /**
  * @swagger
  * /users_tasks:
@@ -27,6 +27,10 @@ const userTaskController = require('./userTaskController');
  *       400:
  *         description: Bad Request
  */
-router.post('/users_tasks', userTaskController.createUserTask);
+router.post(
+  '/users_tasks',
+  auth.authManagerMiddleware,
+  userTaskController.createUserTask
+);
 
 module.exports = router;

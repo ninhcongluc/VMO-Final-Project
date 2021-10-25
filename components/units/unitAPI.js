@@ -52,7 +52,7 @@ router.post('/units', auth.authAdminMiddleware, unitController.createUnit);
  *           description: Bad request
  *
  */
-router.get('/units', auth.authAdminMiddleware, unitController.getAll);
+router.get('/units', auth.authMiddleware, unitController.getAll);
 
 /**
  * @swagger
@@ -74,7 +74,7 @@ router.get('/units', auth.authAdminMiddleware, unitController.getAll);
  *         description: Bad Request
  *
  */
-router.get('/units/:id', auth.authAdminMiddleware, unitController.getUnitById);
+router.get('/units/:id', auth.authMiddleware, unitController.getUnitById);
 
 /**
  * @swagger
@@ -98,7 +98,7 @@ router.get('/units/:id', auth.authAdminMiddleware, unitController.getUnitById);
  */
 router.get(
   '/units/users/:id',
-  auth.authAdminMiddleware,
+  auth.authMiddleware,
   unitController.getUserByUnit
 );
 
@@ -124,7 +124,7 @@ router.get(
  */
 router.get(
   '/units/projects/:id',
-  auth.authAdminMiddleware,
+  auth.authMiddleware,
   unitController.getProjectByUnit
 );
 

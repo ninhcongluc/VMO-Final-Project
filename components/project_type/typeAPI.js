@@ -27,7 +27,7 @@ const auth = require('../auth/authMiddleware');
  *       400:
  *         description: Bad Request
  */
-router.post('/types', auth.authMiddleware, typeController.create);
+router.post('/types', auth.authAdminMiddleware, typeController.create);
 /**
  * @swagger
  * /types:
@@ -98,7 +98,7 @@ router.get('/types/:id', auth.authMiddleware, typeController.getTypeById);
  *         description: Bad Request
  *
  */
-router.put('/types/:id', auth.authMiddleware, typeController.updateType);
+router.put('/types/:id', auth.authAdminMiddleware, typeController.updateType);
 
 /**
  * @swagger
@@ -120,6 +120,10 @@ router.put('/types/:id', auth.authMiddleware, typeController.updateType);
  *         description: Bad Request
  *
  */
-router.delete('/status/:id', auth.authMiddleware, typeController.deleteType);
+router.delete(
+  '/status/:id',
+  auth.authAdminMiddleware,
+  typeController.deleteType
+);
 
 module.exports = router;

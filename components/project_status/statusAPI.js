@@ -27,7 +27,7 @@ const auth = require('../auth/authMiddleware');
  *       400:
  *         description: Bad Request
  */
-router.post('/status', auth.authMiddleware, statusController.create);
+router.post('/status', auth.authAdminMiddleware, statusController.create);
 /**
  * @swagger
  * /status:
@@ -98,7 +98,11 @@ router.get('/status/:id', auth.authMiddleware, statusController.getStatusById);
  *         description: Bad Request
  *
  */
-router.put('/status/:id', auth.authMiddleware, statusController.updateStatus);
+router.put(
+  '/status/:id',
+  auth.authAdminMiddleware,
+  statusController.updateStatus
+);
 
 /**
  * @swagger
@@ -122,7 +126,7 @@ router.put('/status/:id', auth.authMiddleware, statusController.updateStatus);
  */
 router.delete(
   '/status/:id',
-  auth.authMiddleware,
+  auth.authAdminMiddleware,
   statusController.deleteStatus
 );
 

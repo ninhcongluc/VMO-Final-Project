@@ -5,7 +5,7 @@ const unitService = require('./unitService');
 const userService = require('../users/userService');
 const projectService = require('../projects/projectService');
 
-const createUnit = async (req, res) => {
+const createUnit = async (req, res, next) => {
   const { name, description } = req.body;
   const isValid = await unitValidation.validate({
     name,
@@ -13,6 +13,12 @@ const createUnit = async (req, res) => {
   });
   if (isValid.error) {
     return res.status(StatusCodes.BAD_REQUEST).send(isValid.error.message);
+  }
+  const isDuplicate = await unitService.findUnitByName(name);
+  if (isDuplicate) {
+    const error = new Error(`Unit ${name} already exists`);
+    error.statusCode = StatusCodes.BAD_REQUEST;
+    return next(error);
   }
   try {
     const unit = await unitService.createUnit(name, description);
@@ -50,7 +56,7 @@ const getProjectByUnit = async (req, res) => {
   }
 };
 
-const updateUnit = async (req, res) => {
+const updateUnit = async (req, res, next) => {
   const { id } = req.params;
   const { name, description } = req.body;
   const isValid = await unitValidation.validate({
@@ -59,6 +65,12 @@ const updateUnit = async (req, res) => {
   });
   if (isValid.error) {
     return res.status(StatusCodes.BAD_REQUEST).send(isValid.error.message);
+  }
+  const isDuplicate = await unitService.findUnitByName(name);
+  if (isDuplicate) {
+    const error = new Error(`Unit ${name} already exists`);
+    error.statusCode = StatusCodes.BAD_REQUEST;
+    return next(error);
   }
   try {
     await unitService.updateById(id, name, description);

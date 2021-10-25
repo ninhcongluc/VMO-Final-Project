@@ -31,7 +31,6 @@ const createProject = async (req, res, next) => {
   const isDuplicate = await projectService.findProjectByName(name);
   // check user existed
   if (isDuplicate) {
-    console.log('here');
     const error = new Error(`Project with ${name} has already been created`);
     error.statusCode = StatusCodes.BAD_REQUEST;
     return next(error);

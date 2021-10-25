@@ -49,6 +49,13 @@ const create = async (req, res, next) => {
     error.statusCode = StatusCodes.BAD_REQUEST;
     return next(error);
   }
+  const isPhoneDuplicate = await userService.findUserByPhone(phone);
+  // check phone existed
+  if (isPhoneDuplicate) {
+    const error = new Error(`Phone number already in use`);
+    error.statusCode = StatusCodes.BAD_REQUEST;
+    return next(error);
+  }
   // hash Password
   try {
     const salt = await bcrypt.genSalt(saltRounds);

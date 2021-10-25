@@ -5,6 +5,8 @@ const Unit = require('../units/unit');
 const findUserByUsername = username =>
   User.findOne({ include: [Role, Unit], where: { username } });
 
+const findUserByPhone = phone =>
+  User.findOne({ include: [Role, Unit], where: { phone } });
 const findUserByUnitId = unitId => User.findAll({ where: { unitId } });
 
 const createUser = (
@@ -88,4 +90,5 @@ module.exports = {
   updateUserById,
   deleteUserById,
   updateById,
+  findUserByPhone,
 };

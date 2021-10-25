@@ -32,8 +32,43 @@ const findAll = () =>
   });
 
 const findById = id => Project.findByPk(id);
+const findProjectByName = name =>
+  Project.findOne({ include: [Type, Status], where: { name } });
+
+const findProjectByUnitId = unitId =>
+  Project.findAll({ include: [Type, Status], where: { unitId } });
+
+const deleteProjectById = id => Project.destroy({ where: { id } });
+const updateById = (
+  id,
+  name,
+  description,
+  typeId,
+  statusId,
+  startDate,
+  endDate,
+  unitId,
+  customerId
+) =>
+  Project.update(
+    {
+      name,
+      description,
+      typeId,
+      statusId,
+      startDate,
+      endDate,
+      unitId,
+      customerId,
+    },
+    { where: { id } }
+  );
 module.exports = {
   createProject,
   findAll,
   findById,
+  findProjectByUnitId,
+  findProjectByName,
+  deleteProjectById,
+  updateById,
 };

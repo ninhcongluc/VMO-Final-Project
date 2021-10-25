@@ -104,4 +104,88 @@ router.get(
   projectController.getProjectById
 );
 
+/**
+ * @swagger
+ * /projects/{projectId}:
+ *   delete:
+ *     summary: Delete a project  by id
+ *     tags:
+ *       - Project
+ *     parameters:
+ *      - in: path
+ *        name: projectId
+ *        required: true
+ *        description: The Id of the project type to delete
+ *     description: Return project object
+ *     responses:
+ *       200:
+ *         description: DELETE Successfully.
+ *       400:
+ *         description: Bad Request
+ *
+ */
+router.delete(
+  '/projects/:id',
+  auth.authAdminMiddleware,
+  projectController.deleteProject
+);
+
+/**
+ * @swagger
+ * /projects/{projectId}:
+ *   put:
+ *     summary: Update project by Id
+ *     tags:
+ *       - Project
+ *     parameters:
+ *      - in: path
+ *        name: projectId
+ *        required: true
+ *        description: The Id of the project to update
+ *      - in: formData
+ *        name: name
+ *        required: true
+ *        description: The name of the project to update
+ *      - in: formData
+ *        name: description
+ *        required: true
+ *        description: The description of the project to update
+ *      - in: formData
+ *        name: typeId
+ *        required: true
+ *        description: The type of the project to update
+ *      - in: formData
+ *        name: statusId
+ *        required: true
+ *        description: The status of the project to update
+ *      - in: formData
+ *        name: startDate
+ *        required: true
+ *        description: The start date of the project to update
+ *      - in: formData
+ *        name: endDate
+ *        required: true
+ *        description: The end date of the project to update
+ *      - in: formData
+ *        name: unitId
+ *        required: true
+ *        description: The unit of the project to update
+ *      - in: formData
+ *        name: customerId
+ *        required: true
+ *        description: The customer of the project to update
+ *     description: return updated successfully
+ *     responses:
+ *       200:
+ *         description: UPDATED Successfully.
+ *       400:
+ *         description: Bad Request
+ *
+ */
+router.put(
+  '/projects/:id',
+  auth.authAdminMiddleware,
+  projectController.updateProject
+);
+
 module.exports = router;

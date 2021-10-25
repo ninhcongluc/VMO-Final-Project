@@ -7,6 +7,7 @@ const createUnit = (name, description) =>
   });
 
 const findAll = () => Unit.findAll();
+const findUnitById = id => Unit.findByPk(id);
 
 const updateById = (id, name, description) =>
   Unit.update({ name, description }, { where: { id } });
@@ -17,4 +18,5 @@ module.exports = {
   findAll,
   updateById,
   deleteUnitById,
+  findUnitById,
 };

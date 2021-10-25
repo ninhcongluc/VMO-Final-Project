@@ -56,6 +56,28 @@ router.get('/units', auth.authAdminMiddleware, unitController.getAll);
 
 /**
  * @swagger
+ * /units/{unitId}:
+ *   get:
+ *     summary: Get one Unit by id
+ *     tags:
+ *       - Unit
+ *     parameters:
+ *      - in: path
+ *        name: unitId
+ *        required: true
+ *        description: The Id of the unit to return
+ *     description: Return unit object
+ *     responses:
+ *       200:
+ *         description: Get a unit object.
+ *       400:
+ *         description: Bad Request
+ *
+ */
+router.get('/units/:id', auth.authAdminMiddleware, unitController.getUnitById);
+
+/**
+ * @swagger
  * /units/users/{unitId}:
  *   get:
  *     summary: get a list of users with the same unit by id
@@ -78,6 +100,32 @@ router.get(
   '/units/users/:id',
   auth.authAdminMiddleware,
   unitController.getUserByUnit
+);
+
+/**
+ * @swagger
+ * /units/projects/{unitId}:
+ *   get:
+ *     summary: get a list of projects with the same unit by id
+ *     tags:
+ *       - Unit
+ *     parameters:
+ *      - in: path
+ *        name: unitId
+ *        required: true
+ *        description: The Id of the unit to return
+ *     description: Return list of projects with the same unit by id
+ *     responses:
+ *       200:
+ *         description: Get a list of projects.
+ *       400:
+ *         description: Bad Request
+ *
+ */
+router.get(
+  '/units/projects/:id',
+  auth.authAdminMiddleware,
+  unitController.getProjectByUnit
 );
 
 /**

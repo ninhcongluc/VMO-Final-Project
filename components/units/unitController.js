@@ -3,6 +3,7 @@ const { StatusCodes } = require('http-status-codes');
 const unitValidation = require('./unitValidation');
 const unitService = require('./unitService');
 const userService = require('../users/userService');
+const projectService = require('../projects/projectService');
 
 const createUnit = async (req, res) => {
   const { name, description } = req.body;
@@ -11,13 +12,13 @@ const createUnit = async (req, res) => {
     description,
   });
   if (isValid.error) {
-    res.status(StatusCodes.BAD_REQUEST).send(isValid.error.message);
+    return res.status(StatusCodes.BAD_REQUEST).send(isValid.error.message);
   }
   try {
     const unit = await unitService.createUnit(name, description);
-    res.status(StatusCodes.OK).send(unit);
+    return res.status(StatusCodes.OK).send(unit);
   } catch (error) {
-    res.status(StatusCodes.BAD_REQUEST).send(error);
+    return res.status(StatusCodes.BAD_REQUEST).send(error);
   }
 };
 
@@ -35,6 +36,15 @@ const getUserByUnit = async (req, res) => {
   try {
     const users = await userService.findUserByUnitId(id);
     res.status(StatusCodes.OK).send(users);
+  } catch (error) {
+    res.status(StatusCodes.BAD_REQUEST).send(error);
+  }
+};
+const getProjectByUnit = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const projects = await projectService.findProjectByUnitId(id);
+    res.status(StatusCodes.OK).send(projects);
   } catch (error) {
     res.status(StatusCodes.BAD_REQUEST).send(error);
   }
@@ -68,10 +78,22 @@ const deleteUnit = async (req, res) => {
   }
 };
 
+const getUnitById = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const unit = await unitService.findUnitById(id);
+    res.status(StatusCodes.OK).send(unit);
+  } catch (error) {
+    res.status(StatusCodes.BAD_REQUEST).send(error);
+  }
+};
+
 module.exports = {
   createUnit,
   getAll,
   getUserByUnit,
+  getProjectByUnit,
   updateUnit,
   deleteUnit,
+  getUnitById,
 };

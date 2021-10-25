@@ -4,6 +4,7 @@ const Status = require('../project_status/status');
 const User = require('../users/user');
 const Tech = require('../techs/tech');
 const Unit = require('../units/unit');
+const Task = require('../tasks/task');
 
 const createProject = (
   name,
@@ -28,7 +29,7 @@ const createProject = (
 
 const findAll = () =>
   Project.findAll({
-    include: [Type, Status, User, Tech, Unit],
+    include: [Type, Status, User, Tech, Unit, Task],
   });
 
 const findById = id => Project.findByPk(id);

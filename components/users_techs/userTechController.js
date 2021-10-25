@@ -16,4 +16,13 @@ const createUserTech = async (req, res) => {
   }
 };
 
-module.exports = { createUserTech };
+const getAll = async (req, res) => {
+  try {
+    const userTech = await userTechService.findAll();
+    res.status(StatusCodes.OK).send(userTech);
+  } catch (error) {
+    res.status(StatusCodes.BAD_REQUEST).send(error);
+  }
+};
+
+module.exports = { createUserTech, getAll };

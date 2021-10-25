@@ -16,4 +16,13 @@ const createUserTask = async (req, res) => {
   }
 };
 
-module.exports = { createUserTask };
+const getAll = async (req, res) => {
+  try {
+    const userTask = await userTaskService.findAll();
+    res.status(StatusCodes.OK).send(userTask);
+  } catch (error) {
+    res.status(StatusCodes.BAD_REQUEST).send(error);
+  }
+};
+
+module.exports = { createUserTask, getAll };

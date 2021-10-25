@@ -188,4 +188,10 @@ router.put(
   projectController.updateProject
 );
 
+router.get(
+  '/projects/tasks/:id',
+  auth.authMiddleware,
+  projectController.getTaskFromProject
+);
+
 module.exports = router;

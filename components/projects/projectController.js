@@ -2,6 +2,7 @@ const { StatusCodes } = require('http-status-codes');
 
 const projectValidation = require('./projectValidation');
 const projectService = require('./projectService');
+const taskService = require('../tasks/taskService');
 
 const createProject = async (req, res, next) => {
   const {
@@ -124,10 +125,22 @@ const updateProject = async (req, res) => {
     return res.status(StatusCodes.BAD_REQUEST).send(error);
   }
 };
+
+const getTaskFromProject = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const users = await taskService.findTaskByProjectId(id);
+    res.status(StatusCodes.OK).send(users);
+  } catch (error) {
+    res.status(StatusCodes.BAD_REQUEST).send(error);
+  }
+};
+
 module.exports = {
   createProject,
   getAll,
   getProjectById,
   deleteProject,
   updateProject,
+  getTaskFromProject,
 };

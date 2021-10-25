@@ -46,4 +46,52 @@ const createTask = async (req, res, next) => {
   }
 };
 
-module.exports = { getAll, createTask };
+const getTaskById = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const task = await taskService.findById(id);
+    res.status(StatusCodes.OK).send(task);
+  } catch (error) {
+    res.status(StatusCodes.BAD_REQUEST).send(error);
+  }
+};
+
+const updateTask = async (req, res) => {
+  const { id } = req.params;
+  const { name, description, projectId, startDate, endDate } = req.body;
+  const isValid = await taskValidation.validate({
+    name,
+    description,
+    projectId,
+    startDate,
+    endDate,
+  });
+  if (isValid.error) {
+    return res.status(StatusCodes.BAD_REQUEST).send(isValid.error.message);
+  }
+
+  try {
+    await taskService.updateById(
+      id,
+      name,
+      description,
+      projectId,
+      startDate,
+      endDate
+    );
+    return res.status(StatusCodes.OK).send('Updated Successfully');
+  } catch (error) {
+    return res.status(StatusCodes.BAD_REQUEST).send(error);
+  }
+};
+
+const deleteTask = async (req, res) => {
+  const { id } = req.params;
+  try {
+    await taskService.deleteById(id);
+    res.status(StatusCodes.OK).send('Deleted Successfully');
+  } catch (error) {
+    res.status(StatusCodes.BAD_REQUEST).send(error);
+  }
+};
+module.exports = { getAll, createTask, getTaskById, updateTask, deleteTask };

@@ -34,4 +34,25 @@ router.post(
   userTechController.createUserTech
 );
 
+/**
+ * @swagger
+ * /users_techs:
+ *   get:
+ *     summary: Get list technologies of users
+ *     tags:
+ *       - User Tech
+ *     description: Return list of technologies of users
+ *     responses:
+ *       200:
+ *         description: Get List of technologies of users successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *       400:
+ *           description: Bad request
+ *
+ */
+router.get('/users_techs', auth.authAdminMiddleware, userTechController.getAll);
+
 module.exports = router;

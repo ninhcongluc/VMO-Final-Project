@@ -33,4 +33,29 @@ router.post(
   userTaskController.createUserTask
 );
 
+/**
+ * @swagger
+ * /users_tasks:
+ *   get:
+ *     summary: Get list tasks of users
+ *     tags:
+ *       - User Task
+ *     description: Return list of tasks of users
+ *     responses:
+ *       200:
+ *         description: Get List tasks of users successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *       400:
+ *           description: Bad request
+ *
+ */
+router.get(
+  '/users_tasks',
+  auth.authManagerMiddleware,
+  userTaskController.getAll
+);
+
 module.exports = router;

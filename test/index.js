@@ -286,6 +286,45 @@ describe('Purpose for testing API', () => {
         });
     });
   });
+  describe('Create new Technology fail /technologies', () => {
+    it('Create technology fail, tech lack properties', done => {
+      chai
+        .request(server)
+        .post('/technologies')
+        .send(data.techLackProps)
+        .set('x-access-token', token)
+        .end((err, res) => {
+          res.should.have.status(400);
+          done();
+        });
+    });
+  });
+  describe('Create new Technology fail /technologies', () => {
+    it('Create technology fail, name invalid', done => {
+      chai
+        .request(server)
+        .post('/technologies')
+        .send(data.techNameInvalid)
+        .set('x-access-token', token)
+        .end((err, res) => {
+          res.should.have.status(400);
+          done();
+        });
+    });
+  });
+  describe('Create new Technology fail /technologies', () => {
+    it('Create technology fail, status invalid type', done => {
+      chai
+        .request(server)
+        .post('/technologies')
+        .send(data.techStatusInvalid)
+        .set('x-access-token', token)
+        .end((err, res) => {
+          res.should.have.status(400);
+          done();
+        });
+    });
+  });
   describe('Get list projects success /projects', () => {
     it('Get list projects success', done => {
       chai

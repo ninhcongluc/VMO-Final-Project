@@ -70,7 +70,7 @@ const verifyEmail = async (req, res, next) => {
       from: `${process.env.USER}`,
       to: ` ${user.username}`,
       subject: '[VMO] Please reset your password',
-      html: `<h1 style="background-color:lightblue;">Reset your GitHub password</h1>
+      html: `<h1 style="background-color:lightblue;">Reset your password</h1>
       <br/></br><p style="">We heard that you lost your password. Sorry about that!</p>
       <br/><p style="">But don’t worry! You can use the following link to reset your password:</p>
       <br/><a>http://localhost:8081/password_reset/${token}</a>

@@ -40,57 +40,22 @@
     </div>
   </div>
   <div class="main-content">
-    <input type="text" v-model="key" placeholder="search by name" />
-
-    <br />
-    <a href="/admin_manager/projects/create">Create project</a>
+    <a href="/admin_manager/members/roles/create">Create Role</a>
     <table class="table">
       <thead class="thead-light">
         <tr>
           <th scope="col">#</th>
           <th scope="col">Name</th>
-          <th scope="col">Type</th>
-          <th scope="col">Status</th>
-          <th scope="col">Tech</th>
-          <th scope="col">Unit</th>
-          <th scope="col">Customer</th>
-          <th scope="col">End Date</th>
-          <th scope="col">Action</th>
+          <th scope="col">Tools</th>
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(project, id) in filteredProjects" :key="project.id">
+        <tr v-for="(role, id) in user.roles" :key="role.id">
           <th scope="row">{{ id + 1 }}</th>
-          <td>{{ project.name }}</td>
-          <td>{{ project.type.name }}</td>
-          <td class="maintain" v-if="project.status.name === 'Maintain'">
-            {{ project.status.name }}
-          </td>
-          <td class="inprogress" v-else>{{ project.status.name }}</td>
+          <td>{{ role.name }}</td>
           <td>
-            <template v-for="tech in project.techs" :key="tech.id">
-              {{ tech.name }}
-            </template>
-          </td>
-          <td>{{ project.unit.name }}</td>
-          <td>{{ project.user.name }}</td>
-          <td>{{ project.endDate }}</td>
-
-          <td>
-            <button
-              @click="handleUpdate(project.id)"
-              type="button"
-              class="btn btn-warning"
-            >
-              Update
-            </button>
-            <button
-              @click="handleDelete(project.id)"
-              type="button"
-              class="btn btn-danger"
-            >
-              Delete
-            </button>
+            <button type="button" class="btn btn-warning">Update</button>
+            <button type="button" class="btn btn-danger">Delete</button>
           </td>
         </tr>
       </tbody>
@@ -103,12 +68,11 @@
 import axios from 'axios';
 import jwt from 'jsonwebtoken';
 export default {
-  name: 'Project',
+  name: 'ManageRole',
   data() {
     return {
-      projects: [],
-      key: '',
-      message: '',
+      id: this.$route.params.id,
+      user: {},
     };
   },
   async created() {
@@ -122,35 +86,15 @@ export default {
   },
   async mounted() {
     try {
-      const projects = await axios.get('/projects');
-      this.projects = projects.data;
-
-      console.log(this.filteredProjects);
+      const user = await axios.get(`/users/${this.id}`);
+      this.user = user.data;
+      console.log(this.user);
     } catch (error) {
-      console.log(error.response.data);
+      console.log(error.response.message);
     }
   },
-  computed: {
-    filteredProjects: function () {
-      return this.projects.filter(project => {
-        return project.name.toLowerCase().match(this.key.toLowerCase());
-      });
-    },
-  },
-  methods: {
-    handleUpdate(id) {
-      this.$router.push(`/admin_manager/projects/update/${id}`);
-    },
-    async handleDelete(id) {
-      try {
-        const res = await axios.delete(`/projects/${id}`);
-        this.message = res.data;
-        this.$router.push(`/admin_manager/projects`);
-      } catch (error) {
-        this.message = error.response.data;
-      }
-    },
-  },
+
+  methods: {},
 };
 </script>
 
@@ -302,18 +246,6 @@ main {
   padding: 2rem 1.5rem;
   background: #f1f5f9;
   min-height: calc(100vh - 90px);
-}
-
-.maintain {
-  color: white;
-  background-color: rgb(184, 152, 46);
-  width: 10px !important;
-}
-
-.inprogress {
-  color: white;
-  background-color: red;
-  width: 10px !important;
 }
 
 @media only screen and (max-width: 1200px) {

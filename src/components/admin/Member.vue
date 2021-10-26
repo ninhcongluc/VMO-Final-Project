@@ -10,7 +10,7 @@
       <div class="sidebar-menu">
         <ul>
           <li>
-            <a href=""
+            <a href="/admin_manager"
               ><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a
             >
           </li>
@@ -90,6 +90,13 @@
             >
               Info
             </button>
+            <button
+              @click="manageRole(user.id)"
+              type="button"
+              class="btn btn-light"
+            >
+              Role
+            </button>
           </td>
         </tr>
       </tbody>
@@ -151,6 +158,9 @@ export default {
       } catch (error) {
         this.message = error.response.data;
       }
+    },
+    manageRole(id) {
+      this.$router.push(`/admin_manager/members/roles/${id}`);
     },
   },
 };

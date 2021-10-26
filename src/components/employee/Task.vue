@@ -28,14 +28,26 @@
         </li>
       </ul>
     </nav>
-    <div>
-      <template v-for="project in projects" :key="project.id">
-        <button @click="viewTask(project.id)" class="btn_project">
-          {{ project.name }}
-        </button>
-        <br />
-      </template>
-    </div>
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Name</th>
+          <th scope="col">Description</th>
+          <th scope="col">Start Date</th>
+          <th scope="col">End Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="(task, id) in tasks" :key="task.id">
+          <th scope="row">{{ id + 1 }}</th>
+          <td>{{ task.name }}</td>
+          <td>{{ task.description }}</td>
+          <td>{{ task.startDate }}</td>
+          <td>{{ task.endDate }}</td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </template>
 
@@ -43,11 +55,11 @@
 import axios from 'axios';
 import jwt from 'jsonwebtoken';
 export default {
-  name: 'Employee',
+  name: 'Task',
   data() {
     return {
-      employee: {},
-      projects: [],
+      id: this.$route.params.id,
+      tasks: [],
     };
   },
   async created() {
@@ -56,39 +68,25 @@ export default {
     } else {
       const token = localStorage.getItem('token');
       const user = jwt.verify(token, process.env.VUE_APP_SOMEKEY);
-      try {
-        const userInfo = await axios.get(`/users/${user.id}`);
-        this.employee = userInfo.data;
-        const projects = await axios.get('/projects');
-        this.projects = projects.data.filter(
-          project => project.unit.id === this.employee.unit.id
-        );
-        console.log(this.projects);
-      } catch (error) {
-        console.log(error.response.message);
-      }
+      console.log(user);
     }
   },
-  async mounted() {},
+  async mounted() {
+    try {
+      const tasks = await axios.get(`/projects/tasks/${this.id}`);
+      this.tasks = tasks.data;
+      console.log(this.tasks);
+    } catch (error) {
+      console.log(error.response.message);
+    }
+  },
   methods: {
     async handleLogout() {
       localStorage.clear();
       this.$router.push('/');
     },
-    viewTask(id) {
-      this.$router.push(`/employee/tasks/${id}`);
-    },
   },
 };
 </script>
 
-<style scoped>
-.btn_project {
-  width: 200px;
-  height: 150px;
-  margin-top: 10px;
-  margin-left: 10%;
-  background-color: rgb(87, 87, 184);
-  color: white;
-}
-</style>
+<style scoped></style>

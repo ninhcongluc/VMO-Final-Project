@@ -23,6 +23,8 @@ import UpdateUnit from './components/unit/UpdateUnit.vue';
 import ViewProject from './components/admin/ViewProject.vue';
 import CreateProject from './components/project/CreateProject.vue';
 import UpdateProject from './components/project/UpdateProject.vue';
+import Task from './components/employee/Task.vue';
+import ManageRole from './components/admin/ManageRole.vue';
 
 const routes = [
   {
@@ -139,6 +141,16 @@ const routes = [
     path: '/admin_manager/projects/update/:id',
     name: 'UpdateProject',
     component: UpdateProject,
+  },
+  {
+    path: '/employee/tasks/:id',
+    name: 'Task',
+    component: Task,
+  },
+  {
+    path: '/admin_manager/members/roles/:id',
+    name: 'ManageRole',
+    component: ManageRole,
   },
 ];
 

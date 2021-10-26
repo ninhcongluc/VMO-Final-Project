@@ -61,7 +61,7 @@
           v-model="tech.status"
         >
           <option value="false">Inactive</option>
-          <option value="true" :selected="user.status === true">Acticve</option>
+          <option value="true" :selected="tech.status === true">Acticve</option>
         </select>
       </div>
       <button class="btn btn-primary btn-block">Update Tech</button>

@@ -10,12 +10,14 @@
       <div class="sidebar-menu">
         <ul>
           <li>
-            <a href=""
+            <a href="/admin_manager"
               ><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a
             >
           </li>
           <li>
-            <a href=""><i class="fab fa-node-js"></i><span>Technology</span></a>
+            <a href="/admin_manager/technologies"
+              ><i class="fab fa-node-js"></i><span>Technology</span></a
+            >
           </li>
           <li>
             <a href="/admin_manager/members"

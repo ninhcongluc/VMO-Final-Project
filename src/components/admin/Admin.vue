@@ -10,7 +10,7 @@
       <div class="sidebar-menu">
         <ul>
           <li>
-            <a href=""
+            <a href="/admin_manager"
               ><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a
             >
           </li>
@@ -33,6 +33,11 @@
           <li>
             <a href="/admin_manager/projects"
               ><i class="fas fa-project-diagram"></i><span>Projects</span></a
+            >
+          </li>
+          <li>
+            <a @click="handleLogout"
+              ><i class="fas fa-sign-in-alt"> Logout</i></a
             >
           </li>
         </ul>
@@ -211,7 +216,12 @@ export default {
       console.log('error' + this.errorMessage);
     }
   },
-  methods: {},
+  methods: {
+    async handleLogout() {
+      localStorage.clear();
+      this.$router.push('/');
+    },
+  },
 };
 </script>
 
